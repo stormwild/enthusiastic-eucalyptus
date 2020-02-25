@@ -7,13 +7,13 @@ img_path: /images/10_thumb.jpg
 excerpt: Short brief on this post
 template: post
 ---
-\# A Header
+# A Header
 
 So this post ...
 
-\## Sub Header
+## Sub Header
 
-\`\``
+```
 
 function() {
 
@@ -21,4 +21,4 @@ function() {
 
 }
 
-\`\``
+```
