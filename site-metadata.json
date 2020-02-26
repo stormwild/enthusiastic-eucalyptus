@@ -3,7 +3,7 @@
   "palette": "purple",
   "header": {
     "title": "Philippine Center for Creative Imaging (PCCI)",
-    "logo_img": "/images/logo-pcci-solo.png",
+    "logo_img": "/images/pcci-logo-header.png",
     "has_nav": true,
     "menu": {
       "actions": [
