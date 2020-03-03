@@ -1080,3 +1080,70 @@ collections:
                 required: false
                 hint: Position for sorting
                 valueType: int
+  - name: faculty
+    label: Faculty
+    files:
+      - name: faculty
+        label: Faculty
+        file: src/pages/faculty/index.md
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: true
+            hint: The title of the page.
+          - widget: object
+            name: menus
+            label: Faculty Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+          - widget: hidden
+            name: template
+            label: Template
+            required: true
+            default: faculty
+  - name: instructor
+    label: Instructor
+    folder: src/pages/instructors
+    create: true
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - widget: string
+        name: name
+        label: Name
+        required: true
+        hint: Name of the instructor
+      - widget: date
+        name: date
+        label: Date
+        required: true
+      - widget: image
+        name: thumb_img_path
+        label: Blog Feed Image
+        required: false
+        hint: The image shown in the blog feed.
+      - widget: image
+        name: img_path
+        label: Featured Image
+        required: false
+        hint: The image shown below the title.
+      - widget: string
+        name: excerpt
+        label: Excerpt
+        required: false
+        hint: The excerpt of the post displayed in the blog feed.
+      - widget: hidden
+        name: template
+        label: Template
+        required: true
+        default: post
+      - widget: markdown
+        name: body
+        label: Content
+        required: false
+        hint: Page content
+    filter:
+      field: template
+      value: instructor
