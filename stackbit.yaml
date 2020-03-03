@@ -223,6 +223,23 @@ models:
         name: menus
         label: Blog Menus
         description: Which menus should this page show up in
+  faculty:
+    type: page
+    label: Faculty
+    template: faculty
+    file: faculty/index.md
+    hideContent: true
+    singleInstance: true
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The title of the page.
+        required: true
+      - type: page_menus
+        name: menus
+        label: Blog Menus
+        description: Which menus should this page show up in
   page:
     type: page
     label: Page
@@ -281,6 +298,37 @@ models:
         name: menus
         label: Post Menus
         description: Which menus should this page show up in
+  instructor:
+    type: page
+    label: Instructor
+    template: instructor
+    folder: instructors
+    fields:
+      - type: string
+        name: name
+        label: Name
+        description: Name of the instructor
+        required: true
+      - type: date
+        name: date
+        label: Date
+        required: true
+      - type: image
+        name: thumb_img_path
+        label: Blog Feed Image
+        description: The image shown in the blog feed.
+      - type: image
+        name: img_path
+        label: Featured Image
+        description: The image shown below the title.
+      - type: string
+        name: excerpt
+        label: Excerpt
+        description: The excerpt of the post displayed in the blog feed.
+      - type: page_menus
+        name: menus
+        label: Post Menus
+        description: Which menus should this page show up in  
   section:
     type: object
     label: Section
