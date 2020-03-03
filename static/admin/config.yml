@@ -1098,6 +1098,54 @@ collections:
             required: false
             hint: Which menus should this page show up in
             fields:
+              - widget: object
+                name: secondary
+                label: Secondary menu item
+                required: false
+                hint: Secondary menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
           - widget: hidden
             name: template
             label: Template
@@ -1121,24 +1169,24 @@ collections:
         required: true
       - widget: image
         name: thumb_img_path
-        label: Blog Feed Image
+        label: Faculty Feed Image
         required: false
-        hint: The image shown in the blog feed.
+        hint: The image shown in the faculty feed.
       - widget: image
         name: img_path
         label: Featured Image
         required: false
-        hint: The image shown below the title.
+        hint: The image shown below the name.
       - widget: string
         name: excerpt
         label: Excerpt
         required: false
-        hint: The excerpt of the post displayed in the blog feed.
+        hint: The excerpt of the post displayed in the faculty feed.
       - widget: hidden
         name: template
         label: Template
         required: true
-        default: post
+        default: instructor
       - widget: markdown
         name: body
         label: Content
