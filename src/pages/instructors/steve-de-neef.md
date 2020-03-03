@@ -1,5 +1,5 @@
 ---
-name: Steve de Neef
+instructor_name: Steve de Neef
 date: '2017-03-26'
 thumb_img_path: images/1_thumb.jpg
 excerpt: >-

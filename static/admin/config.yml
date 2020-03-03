@@ -1159,8 +1159,8 @@ collections:
     slug: '{{slug}}'
     fields:
       - widget: string
-        name: name
-        label: Name
+        name: instructor_name
+        label: Instructor Name
         required: true
         hint: Name of the instructor
       - widget: date

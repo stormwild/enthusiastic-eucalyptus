@@ -13,16 +13,11 @@ export default class Post extends React.Component {
               <div className="inner-medium">
                 <article className="post post-full">
                   <header className="post-header">
-                    <h1 className="post-title">{_.get(this.props, 'pageContext.frontmatter.name')}</h1>
+                    <h1 className="post-title">{_.get(this.props, 'pageContext.frontmatter.instructor_name')}</h1>
                   </header>
                   {_.get(this.props, 'pageContext.frontmatter.img_path') && 
                   <div className="post-thumbnail">
-                    <img src={safePrefix(_.get(this.props, 'pageContext.frontmatter.img_path'))} alt={_.get(this.props, 'pageContext.frontmatter.name')} />
-                  </div>
-                  }
-                  {_.get(this.props, 'pageContext.frontmatter.subtitle') && 
-                  <div className="post-subtitle">
-                    {htmlToReact(_.get(this.props, 'pageContext.frontmatter.subtitle'))}
+                    <img src={safePrefix(_.get(this.props, 'pageContext.frontmatter.img_path'))} alt={_.get(this.props, 'pageContext.frontmatter.instructor_name')} />
                   </div>
                   }
                   <div className="post-content">
