@@ -3,8 +3,7 @@ name: Steve de Neef
 date: '2017-03-26'
 thumb_img_path: images/1_thumb.jpg
 excerpt: >-
-  Vis accumsan feugiat adipiscing nisl amet adipiscing accumsan blandit accumsan
-  sapien blandit ac amet faucibus aliquet placerat commodo.
+  Steve De Neef is a Belgian who has found a second home in the Philippines. He is very familiar with the diving around the archipelago and its marine life.
 template: instructor
 ---
 
