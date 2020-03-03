@@ -1153,6 +1153,7 @@ collections:
             default: faculty
   - name: instructor
     label: Instructor
+    identifier_field: instructor_name
     folder: src/pages/instructors
     create: true
     extension: md
