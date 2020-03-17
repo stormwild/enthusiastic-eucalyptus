@@ -29,3 +29,7 @@ The content of this site is managed by NetlifyCMS. Visit https://{yoursite-domai
         npm run develop
 
 1. Browse to [http://localhost:8000/](http://localhost:8000/)
+
+## References
+
+- [Build a dynamic JAMstack app with GatsbyJS and FaunaDB](https://css-tricks.com/build-a-dynamic-jamstack-app-with-gatsbyjs-and-faunadb/)

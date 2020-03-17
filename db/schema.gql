@@ -1,0 +1,35 @@
+
+type Student {
+    name: String!
+}
+
+type Instructor {
+    name: String!
+    photo: String
+    excerpt: String
+    bio: String
+    courses: [Course!]! @relation
+}
+
+type Course {
+    title: String!
+    description: String!
+    instructors: [Instructor!]! @relation    
+    fee: Float
+}
+
+type Schedule {
+    course: Course! @relation
+    startDate: String!
+    endDate: String!
+    startTime: String
+    endTime: String
+    dates: [String!]!
+}
+
+type Query {
+    instructors: [Instructor]
+    courses: [Course]
+    schedules: [Schedule]
+}
+

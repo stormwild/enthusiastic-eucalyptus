@@ -1,3 +1,7 @@
+require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
     pathPrefix: '/',
     siteMetadata: require('./site-metadata.json'),
@@ -27,7 +31,7 @@ module.exports = {
         {
             resolve: `gatsby-remark-page-creator`,
             options: {
-                
+
             }
         },
         {
@@ -37,6 +41,17 @@ module.exports = {
                 pageContextProperty: `menus`,
                 menus: require('./src/data/menus.json'),
             }
+        },
+        {
+            resolve: "gatsby-source-graphql",
+            options: {
+                typeName: "Fauna",
+                fieldName: "fauna",
+                url: "https://graphql.fauna.com/graphql",
+                headers: {
+                    Authorization: `Bearer ${process.env.FAUNADB_SERVER_KEY}`,
+                },
+            },
         }
     ]
 };
