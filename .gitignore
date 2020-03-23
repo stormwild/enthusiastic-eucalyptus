@@ -71,3 +71,9 @@ yarn-error.log
 # Jest
 
 **/__snapshots__
+
+
+## Gatsby Env
+
+.env.development
+.env.production

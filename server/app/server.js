@@ -2,8 +2,6 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _path = _interopRequireDefault(require("path"));
-
 var _express = _interopRequireDefault(require("express"));
 
 var _gatsbyPluginExpress = _interopRequireDefault(require("gatsby-plugin-express"));
@@ -11,7 +9,7 @@ var _gatsbyPluginExpress = _interopRequireDefault(require("gatsby-plugin-express
 var app = (0, _express["default"])(); // serve static files before gatsbyExpress
 
 app.use(_express["default"]["static"]('public/'));
-app.use((0, _gatsbyPluginExpress["default"])("config/gatsby-express.json", {
+app.use((0, _gatsbyPluginExpress["default"])('config/gatsby-express.json', {
   publicDir: 'public/',
   template: 'public/404/index.html',
   // redirects all /path/ to /path
