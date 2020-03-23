@@ -1,0 +1,83 @@
+{
+  "redirects": [],
+  "pages": [
+    {
+      "path": "/about/"
+    },
+    {
+      "path": "/contact/"
+    },
+    {
+      "path": "/features/"
+    },
+    {
+      "path": "/"
+    },
+    {
+      "path": "/posts/Azimuth-Improvements/"
+    },
+    {
+      "path": "/pricing/"
+    },
+    {
+      "path": "/signup/"
+    },
+    {
+      "path": "/posts/Customer-Loyalty/"
+    },
+    {
+      "path": "/style-guide/"
+    },
+    {
+      "path": "/posts/Customer-Service-Skills-that-Every-Employee-Needs/"
+    },
+    {
+      "path": "/posts/Design-Azimuth/"
+    },
+    {
+      "path": "/posts/Sales-as-Service/"
+    },
+    {
+      "path": "/posts/Design-Team-Collaborates/"
+    },
+    {
+      "path": "/posts/new-class-announcement/"
+    },
+    {
+      "path": "/posts/some-new-post/"
+    },
+    {
+      "path": "/posts/Set-Big-Goals/"
+    },
+    {
+      "path": "/posts/User-Journey-Mapping/"
+    },
+    {
+      "path": "/posts/working-from-home/"
+    },
+    {
+      "path": "/posts/some-post-2/"
+    },
+    {
+      "path": "/instructors/jane-does/"
+    },
+    {
+      "path": "/instructors/cats-crisostomo/"
+    },
+    {
+      "path": "/instructors/john-doe/"
+    },
+    {
+      "path": "/instructors/new-instructor/"
+    },
+    {
+      "path": "/instructors/steve-de-neef/"
+    },
+    {
+      "path": "/faculty/"
+    },
+    {
+      "path": "/blog/"
+    }
+  ]
+}
