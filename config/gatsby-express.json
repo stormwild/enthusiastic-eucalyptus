@@ -2,49 +2,40 @@
   "redirects": [],
   "pages": [
     {
-      "path": "/about/"
-    },
-    {
       "path": "/contact/"
     },
     {
       "path": "/features/"
     },
     {
-      "path": "/"
-    },
-    {
-      "path": "/posts/Azimuth-Improvements/"
+      "path": "/about/"
     },
     {
       "path": "/pricing/"
     },
     {
+      "path": "/posts/Azimuth-Improvements/"
+    },
+    {
       "path": "/signup/"
     },
     {
-      "path": "/posts/Customer-Loyalty/"
+      "path": "/"
     },
     {
       "path": "/style-guide/"
     },
     {
-      "path": "/posts/Customer-Service-Skills-that-Every-Employee-Needs/"
+      "path": "/posts/Customer-Loyalty/"
     },
     {
       "path": "/posts/Design-Azimuth/"
     },
     {
-      "path": "/posts/Sales-as-Service/"
-    },
-    {
       "path": "/posts/Design-Team-Collaborates/"
     },
     {
-      "path": "/posts/new-class-announcement/"
-    },
-    {
-      "path": "/posts/some-new-post/"
+      "path": "/posts/Customer-Service-Skills-that-Every-Employee-Needs/"
     },
     {
       "path": "/posts/Set-Big-Goals/"
@@ -53,31 +44,46 @@
       "path": "/posts/User-Journey-Mapping/"
     },
     {
-      "path": "/posts/working-from-home/"
+      "path": "/posts/Sales-as-Service/"
+    },
+    {
+      "path": "/posts/new-class-announcement/"
     },
     {
       "path": "/posts/some-post-2/"
     },
     {
-      "path": "/instructors/jane-does/"
+      "path": "/posts/some-new-post/"
     },
     {
       "path": "/instructors/cats-crisostomo/"
     },
     {
-      "path": "/instructors/john-doe/"
+      "path": "/posts/working-from-home/"
     },
     {
-      "path": "/instructors/new-instructor/"
+      "path": "/instructors/john-doe/"
     },
     {
       "path": "/instructors/steve-de-neef/"
     },
     {
-      "path": "/faculty/"
+      "path": "/instructors/jane-does/"
+    },
+    {
+      "path": "/instructors/new-instructor/"
     },
     {
       "path": "/blog/"
+    },
+    {
+      "path": "/faculty/"
+    },
+    {
+      "path": "/404/"
+    },
+    {
+      "path": "/404.html"
     }
   ]
 }
