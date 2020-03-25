@@ -9,9 +9,10 @@
     "build": "gatsby build --prefix-paths",
     "serve": "gatsby serve",
     "test": "jest",
-    "app:build": "babel src/app -o server.js",
-    "app:start": "npm run app:build && nodemon server.js",
-    "app:serve": "npm run app:build && node server.js"
+    "app:watch": "webpack --config webpack.config.babel.js -w -p",
+    "app:build": "webpack --config webpack.config.babel.js -p",
+    "app:start": "nodemon server.js",
+    "app:serve": "node server.js"
   },
   "dependencies": {
     "@stackbit/gatsby-plugin-menus": "0.0.4",
@@ -63,6 +64,8 @@
     "nodemon": "^2.0.2",
     "react-test-renderer": "^16.13.0",
     "typescript": "^3.8.3",
-    "utf-8-validate": "^5.0.2"
+    "utf-8-validate": "^5.0.2",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
   }
 }

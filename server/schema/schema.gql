@@ -1,0 +1,51 @@
+
+scalar GraphQLDate
+
+input InstructorInput {
+    name: String!
+    photo: String
+    excerpt: String
+    bio: String
+}
+
+input CourseInput {
+    title: String!
+    description: String!
+    instructors: [InstructorInput!]!
+    fee: Float
+}
+
+type Student {
+    name: String!
+}
+
+type Instructor {
+    name: String!
+    photo: String
+    excerpt: String
+    bio: String
+    courses: [Course!]!
+}
+
+type Course {
+    title: String!
+    description: String!
+    instructors: [Instructor!]!
+    fee: Float
+}
+
+type Schedule {
+    course: Course!
+    dates: [GraphQLDate!]!
+}
+
+type Query {
+    instructors: [Instructor]
+    courses: [Course]
+    schedules: [Schedule]
+}
+
+type Mutation {
+	addInstructor(instructor: InstructorInput!): Instructor!
+	addCourse(course: CourseInput!): Course!
+}

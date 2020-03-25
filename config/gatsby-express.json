@@ -2,19 +2,16 @@
   "redirects": [],
   "pages": [
     {
-      "path": "/contact/"
+      "path": "/features/"
     },
     {
-      "path": "/features/"
+      "path": "/contact/"
     },
     {
       "path": "/about/"
     },
     {
-      "path": "/pricing/"
-    },
-    {
-      "path": "/posts/Azimuth-Improvements/"
+      "path": "/404/"
     },
     {
       "path": "/signup/"
@@ -23,7 +20,16 @@
       "path": "/"
     },
     {
+      "path": "/pricing/"
+    },
+    {
       "path": "/style-guide/"
+    },
+    {
+      "path": "/posts/Azimuth-Improvements/"
+    },
+    {
+      "path": "/posts/Customer-Service-Skills-that-Every-Employee-Needs/"
     },
     {
       "path": "/posts/Customer-Loyalty/"
@@ -35,9 +41,6 @@
       "path": "/posts/Design-Team-Collaborates/"
     },
     {
-      "path": "/posts/Customer-Service-Skills-that-Every-Employee-Needs/"
-    },
-    {
       "path": "/posts/Set-Big-Goals/"
     },
     {
@@ -47,40 +50,37 @@
       "path": "/posts/Sales-as-Service/"
     },
     {
+      "path": "/posts/some-new-post/"
+    },
+    {
       "path": "/posts/new-class-announcement/"
     },
     {
       "path": "/posts/some-post-2/"
     },
     {
-      "path": "/posts/some-new-post/"
+      "path": "/posts/working-from-home/"
     },
     {
       "path": "/instructors/cats-crisostomo/"
     },
     {
-      "path": "/posts/working-from-home/"
+      "path": "/instructors/jane-does/"
     },
     {
       "path": "/instructors/john-doe/"
     },
     {
-      "path": "/instructors/steve-de-neef/"
-    },
-    {
-      "path": "/instructors/jane-does/"
-    },
-    {
       "path": "/instructors/new-instructor/"
     },
     {
-      "path": "/blog/"
+      "path": "/instructors/steve-de-neef/"
     },
     {
       "path": "/faculty/"
     },
     {
-      "path": "/404/"
+      "path": "/blog/"
     },
     {
       "path": "/404.html"

@@ -23,3 +23,14 @@ Setup script
 ## References
 
 - [Example Node Server w/ Babel](https://github.com/babel/example-node-server)
+
+## EsLint
+
+```
+{
+  scripts: {
+        "lint": "eslint --fix src/**/*.js",
+    "prettify": "prettier --write src/**/*.js"
+  }
+}
+```
