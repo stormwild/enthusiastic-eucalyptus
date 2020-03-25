@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import compress from 'compression';
 import helmet from 'helmet';
-import redirect from './gatsby-plugin-express';
-import server from './apollo';
+import redirect from './gatsby/gatsby-plugin-express';
+import server from './graphql/apollo';
 
 const middleware = app => {
   app.use(cors());
@@ -20,7 +20,7 @@ const middleware = app => {
         imgSrc: ["'self'", 'data:', '*.amazonaws.com', 'cdn.jsdelivr.net'],
         fontSrc: ["'self'", 'fonts.gstatic.com'],
       },
-    }),
+    })
   );
   app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 
@@ -37,7 +37,7 @@ const middleware = app => {
       // redirects all /path/ to /path
       // should be used with gatsby-plugin-remove-trailing-slashes
       redirectSlashes: true,
-    }),
+    })
   );
 };
 

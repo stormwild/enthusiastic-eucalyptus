@@ -8,6 +8,14 @@ input InstructorInput {
     bio: String
 }
 
+type Instructor {
+    name: String!
+    photo: String
+    excerpt: String
+    bio: String
+    courses: [Course!]!
+}
+
 input CourseInput {
     title: String!
     description: String!
@@ -19,13 +27,7 @@ type Student {
     name: String!
 }
 
-type Instructor {
-    name: String!
-    photo: String
-    excerpt: String
-    bio: String
-    courses: [Course!]!
-}
+
 
 type Course {
     title: String!

@@ -21,6 +21,20 @@ const config = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.(graphql|gql)$/,
+        use: [
+          {
+            loader: 'webpack-graphql-loader',
+            options: {
+              // validate: true,
+              // schema: "./path/to/schema.json",
+              // removeUnusedFragments: true
+              // etc. See "Loader Options" below
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [],

@@ -86,81 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./server/apollo.js":
-/*!**************************!*\
-  !*** ./server/apollo.js ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports["default"] = void 0;
-
-var _fs = _interopRequireDefault(__webpack_require__(/*! fs */ "fs"));
-
-var _graphql = __webpack_require__(/*! graphql */ "graphql");
-
-var _language = _interopRequireDefault(__webpack_require__(/*! graphql/language */ "graphql/language"));
-
-var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
-
-var _instructors2 = _interopRequireDefault(__webpack_require__(/*! ./data/instructors.json */ "./server/data/instructors.json"));
-
-var GraphQLDate = new _graphql.GraphQLScalarType({
-  name: 'GraphQLDate',
-  description: 'A Date() type in GraphQL as a scalar',
-  serialize: function serialize(value) {
-    return value.toISOString();
-  },
-  parseValue: function parseValue(value) {
-    var dateValue = new Date(value);
-    return isNaN(dateValue) ? undefined : dateValue;
-  },
-  parseLiteral: function parseLiteral(ast) {
-    if (ast.kind == _language["default"].STRING) {
-      var value = new Date(ast.value);
-      return isNaN(value) ? undefined : value;
-    }
-  }
-});
-
-var addInstructor = function addInstructor(_, _ref) {
-  var instructor = _ref.instructor;
-
-  _instructors2["default"].push(instructor);
-
-  return instructor;
-};
-
-var resolvers = {
-  Query: {
-    instructors: function instructors() {
-      return _instructors2["default"];
-    }
-  },
-  Mutation: {
-    addInstructor: addInstructor
-  },
-  GraphQLDate: GraphQLDate
-};
-var server = new _apolloServerExpress.ApolloServer({
-  typeDefs: _fs["default"].readFileSync('./server/schema/schema.gql', 'utf-8'),
-  resolvers: resolvers,
-  formatError: function formatError(error) {
-    console.log(JSON.stringify(error));
-    return error;
-  }
-});
-var _default = server;
-exports["default"] = _default;
-
-/***/ }),
-
 /***/ "./server/data/instructors.json":
 /*!**************************************!*\
   !*** ./server/data/instructors.json ***!
@@ -172,10 +97,110 @@ module.exports = JSON.parse("[{\"name\":\"Mariano \\\"Jun\\\" Miranda\",\"photo\
 
 /***/ }),
 
-/***/ "./server/gatsby-plugin-express.js":
-/*!*****************************************!*\
-  !*** ./server/gatsby-plugin-express.js ***!
-  \*****************************************/
+/***/ "./server/db/mongodb.js":
+/*!******************************!*\
+  !*** ./server/db/mongodb.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
+
+var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
+
+var _readline = _interopRequireDefault(__webpack_require__(/*! readline */ "readline"));
+
+var _instructors = _interopRequireDefault(__webpack_require__(/*! ../data/instructors.json */ "./server/data/instructors.json"));
+
+if (process.platform === 'win32') {
+  var rl = _readline["default"].createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  rl.on('SIGINT', function () {
+    process.emit('SIGINT');
+  });
+}
+
+var gracefulShutdown = function gracefulShutdown(msg, callback) {
+  _mongoose["default"].connection.close(function () {
+    console.log("Mongoose disconnected through ".concat(msg));
+    callback();
+  });
+};
+
+process.once('SIGUSR2', function () {
+  gracefulShutdown('nodemon restart', function () {
+    process.kill(process.pid, 'SIGUSR2');
+  });
+});
+process.on('SIGINT', function () {
+  gracefulShutdown('app termination', function () {
+    process.exit(0);
+  });
+});
+process.on('SIGTERM', function () {
+  gracefulShutdown('Heroku app shutdown', function () {
+    process.exit(0);
+  });
+});
+var conn = process.env.MONGODB_URL || 'mongodb://localhost/pcci';
+
+_mongoose["default"].connect(conn, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+_mongoose["default"].connection.on('connected', function () {
+  return console.log("Mongoose connected to ".concat(conn));
+});
+
+_mongoose["default"].connection.on('error', function (err) {
+  return console.log('Mongoose connection error:', err);
+});
+
+_mongoose["default"].connection.on('disconnected', function () {
+  return console.log('Mongoose disconnected');
+});
+
+_mongoose["default"].connection.once('open', function () {
+  console.log('Connection Successful!');
+  var instructorsSchema = (0, _mongoose.Schema)({
+    name: String,
+    photo: String,
+    excerpt: String,
+    bio: String
+  });
+
+  var Instructor = _mongoose["default"].model('Instructor', instructorsSchema, 'Instructors');
+
+  Instructor.countDocuments(function (err, count) {
+    if (count == 0) {
+      Instructor.collection.insert(_instructors["default"], function () {
+        return console.log('Instructors initialized');
+      });
+    }
+  }); // // a document instance
+  // var book1 = new Book({ name: 'Introduction to Mongoose', price: 10, quantity: 25 });
+  // // save model to database
+  // book1.save(function(err, book) {
+  //   if (err) return console.error(err);
+  //   console.log(book.name + ' saved to bookstore collection.');
+  // });
+});
+
+/***/ }),
+
+/***/ "./server/gatsby/gatsby-plugin-express.js":
+/*!************************************************!*\
+  !*** ./server/gatsby/gatsby-plugin-express.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -239,6 +264,95 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./server/graphql/apollo.js":
+/*!**********************************!*\
+  !*** ./server/graphql/apollo.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _fs = _interopRequireDefault(__webpack_require__(/*! fs */ "fs"));
+
+var _graphql = __webpack_require__(/*! graphql */ "graphql");
+
+var _language = _interopRequireDefault(__webpack_require__(/*! graphql/language */ "graphql/language"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+var _schema = _interopRequireDefault(__webpack_require__(/*! ./schema/schema.gql */ "./server/graphql/schema/schema.gql"));
+
+var _mongoose = _interopRequireDefault(__webpack_require__(/*! mongoose */ "mongoose"));
+
+var GraphQLDate = new _graphql.GraphQLScalarType({
+  name: 'GraphQLDate',
+  description: 'A Date() type in GraphQL as a scalar',
+  serialize: function serialize(value) {
+    return value.toISOString();
+  },
+  parseValue: function parseValue(value) {
+    var dateValue = new Date(value);
+    return isNaN(dateValue) ? undefined : dateValue;
+  },
+  parseLiteral: function parseLiteral(ast) {
+    if (ast.kind == _language["default"].STRING) {
+      var value = new Date(ast.value);
+      return isNaN(value) ? undefined : value;
+    }
+  }
+});
+
+var addInstructor = function addInstructor(_, _ref) {
+  var instructor = _ref.instructor;
+  instructors.push(instructor);
+  return instructor;
+};
+
+var resolvers = {
+  Query: {
+    instructors: function instructors() {
+      var Instructor = _mongoose["default"].model('Instructor');
+
+      return Instructor.find();
+    }
+  },
+  Mutation: {
+    addInstructor: addInstructor
+  },
+  GraphQLDate: GraphQLDate
+}; // fs.readFileSync('./schema/schema.gql', 'utf-8')
+
+var server = new _apolloServerExpress.ApolloServer({
+  typeDefs: _schema["default"],
+  resolvers: resolvers,
+  formatError: function formatError(error) {
+    console.log(JSON.stringify(error));
+    return error;
+  }
+});
+var _default = server;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/schema.gql":
+/*!******************************************!*\
+  !*** ./server/graphql/schema/schema.gql ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "scalar GraphQLDate\n\ninput InstructorInput {\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n}\n\ntype Instructor {\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [Course!]!\n}\n\ninput CourseInput {\n  title: String!\n  description: String!\n  instructors: [InstructorInput!]!\n  fee: Float\n}\n\ntype Student {\n  name: String!\n}\n\ntype Course {\n  title: String!\n  description: String!\n  instructors: [Instructor!]!\n  fee: Float\n}\n\ntype Schedule {\n  course: Course!\n  dates: [GraphQLDate!]!\n}\n\ntype Query {\n  instructors: [Instructor]\n  courses: [Course]\n  schedules: [Schedule]\n}\n\ntype Mutation {\n  addInstructor(instructor: InstructorInput!): Instructor!\n  addCourse(course: CourseInput!): Course!\n}\n"
+
+/***/ }),
+
 /***/ "./server/middleware.js":
 /*!******************************!*\
   !*** ./server/middleware.js ***!
@@ -262,9 +376,9 @@ var _compression = _interopRequireDefault(__webpack_require__(/*! compression */
 
 var _helmet = _interopRequireDefault(__webpack_require__(/*! helmet */ "helmet"));
 
-var _gatsbyPluginExpress = _interopRequireDefault(__webpack_require__(/*! ./gatsby-plugin-express */ "./server/gatsby-plugin-express.js"));
+var _gatsbyPluginExpress = _interopRequireDefault(__webpack_require__(/*! ./gatsby/gatsby-plugin-express */ "./server/gatsby/gatsby-plugin-express.js"));
 
-var _apollo = _interopRequireDefault(__webpack_require__(/*! ./apollo */ "./server/apollo.js"));
+var _apollo = _interopRequireDefault(__webpack_require__(/*! ./graphql/apollo */ "./server/graphql/apollo.js"));
 
 var middleware = function middleware(app) {
   app.use((0, _cors["default"])());
@@ -320,6 +434,8 @@ var _express = _interopRequireDefault(__webpack_require__(/*! express */ "expres
 
 var _middleware = _interopRequireDefault(__webpack_require__(/*! ./middleware */ "./server/middleware.js"));
 
+__webpack_require__(/*! ./db/mongodb */ "./server/db/mongodb.js");
+
 var app = (0, _express["default"])();
 (0, _middleware["default"])(app);
 app.listen(3000, function () {
@@ -336,6 +452,17 @@ app.listen(3000, function () {
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/runtime/helpers/interopRequireDefault");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/interopRequireWildcard":
+/*!****************************************************************!*\
+  !*** external "@babel/runtime/helpers/interopRequireWildcard" ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/interopRequireWildcard");
 
 /***/ }),
 
@@ -427,6 +554,17 @@ module.exports = require("helmet");
 
 /***/ }),
 
+/***/ "mongoose":
+/*!***************************!*\
+  !*** external "mongoose" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("mongoose");
+
+/***/ }),
+
 /***/ "path":
 /*!***********************!*\
   !*** external "path" ***!
@@ -435,6 +573,17 @@ module.exports = require("helmet");
 /***/ (function(module, exports) {
 
 module.exports = require("path");
+
+/***/ }),
+
+/***/ "readline":
+/*!***************************!*\
+  !*** external "readline" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("readline");
 
 /***/ })
 

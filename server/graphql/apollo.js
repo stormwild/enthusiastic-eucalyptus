@@ -2,7 +2,8 @@ import fs from 'fs';
 import { GraphQLScalarType } from 'graphql';
 import Kind from 'graphql/language';
 import { ApolloServer } from 'apollo-server-express';
-import instructors from './data/instructors.json';
+import schema from './schema/schema.gql';
+import mongoose from 'mongoose';
 
 const GraphQLDate = new GraphQLScalarType({
   name: 'GraphQLDate',
@@ -29,7 +30,10 @@ const addInstructor = (_, { instructor }) => {
 
 const resolvers = {
   Query: {
-    instructors: () => instructors,
+    instructors: () => {
+      const Instructor = mongoose.model('Instructor');
+      return Instructor.find();
+    },
   },
   Mutation: {
     addInstructor,
@@ -37,8 +41,9 @@ const resolvers = {
   GraphQLDate,
 };
 
+// fs.readFileSync('./schema/schema.gql', 'utf-8')
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync('./server/schema/schema.gql', 'utf-8'),
+  typeDefs: schema,
   resolvers,
   formatError: error => {
     console.log(JSON.stringify(error));
