@@ -60,6 +60,7 @@ mongoose.connection.once('open', () => {
   const Instructor = mongoose.model('Instructor', instructorsSchema, 'Instructors');
   Instructor.countDocuments((err, count) => {
     if (count == 0) {
+      //(node:28127) DeprecationWarning: collection.insert is deprecated. Use insertOne, insertMany or bulkWrite instead.
       Instructor.collection.insert(instructors, () => console.log('Instructors initialized'));
     }
   });
