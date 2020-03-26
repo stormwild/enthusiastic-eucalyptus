@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import readline from 'readline';
-import instructors from '../data/instructors.json';
+import initInstructors from './models/instructors';
+import initCourseCategories from './models/course-categories';
 
 if (process.platform === 'win32') {
   const rl = readline.createInterface({
@@ -50,21 +51,8 @@ mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'
 mongoose.connection.once('open', () => {
   console.log('Connection Successful!');
 
-  let instructorsSchema = Schema({
-    name: String,
-    photo: String,
-    excerpt: String,
-    bio: String,
-  });
-
-  const Instructor = mongoose.model('Instructor', instructorsSchema, 'Instructors');
-  Instructor.countDocuments((err, count) => {
-    if (count == 0) {
-      //(node:28127) DeprecationWarning: collection.insert is deprecated. Use insertOne, insertMany or bulkWrite instead.
-      Instructor.collection.insert(instructors, () => console.log('Instructors initialized'));
-    }
-  });
-
+  initInstructors();
+  initCourseCategories();
   // // a document instance
   // var book1 = new Book({ name: 'Introduction to Mongoose', price: 10, quantity: 25 });
 

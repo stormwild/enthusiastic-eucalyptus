@@ -34,6 +34,10 @@ const resolvers = {
       const Instructor = mongoose.model('Instructor');
       return Instructor.find();
     },
+    courseCategories: () => {
+      const CourseCategories = mongoose.model('CourseCategory');
+      return CourseCategories.find();
+    },
   },
   Mutation: {
     addInstructor,
