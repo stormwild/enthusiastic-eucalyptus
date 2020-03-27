@@ -527,6 +527,9 @@ var _middleware = _interopRequireDefault(__webpack_require__(/*! ./middleware */
 
 __webpack_require__(/*! ./db/mongodb */ "./server/db/mongodb.js");
 
+// require('dotenv').config({
+//   path: `.env.${process.env.NODE_ENV}`,
+// });
 var app = (0, _express["default"])();
 (0, _middleware["default"])(app);
 app.listen(3000, function () {
