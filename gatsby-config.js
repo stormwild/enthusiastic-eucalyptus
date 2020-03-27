@@ -51,6 +51,7 @@ module.exports = {
         url: `${process.env.PCCI_API_GRAPHQL_URL}`,
       },
     },
+    'gatsby-plugin-pcci-instructor',
     // {
     //   resolve: 'gatsby-plugin-express',
     //   options: {

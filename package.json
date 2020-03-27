@@ -15,6 +15,7 @@
     "app:serve": "NODE_ENV='production' node server.js"
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^0.11.0",
     "@stackbit/gatsby-plugin-menus": "0.0.4",
     "apollo-server-express": "^2.11.0",
     "classnames": "^2.2.6",
