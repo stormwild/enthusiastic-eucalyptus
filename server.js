@@ -283,73 +283,6 @@ _mongoose["default"].connection.once('open', function () {
 
 /***/ }),
 
-/***/ "./server/gatsby/gatsby-plugin-express.js":
-/*!************************************************!*\
-  !*** ./server/gatsby/gatsby-plugin-express.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports["default"] = void 0;
-
-var _fs = _interopRequireDefault(__webpack_require__(/*! fs */ "fs"));
-
-var _path = _interopRequireDefault(__webpack_require__(/*! path */ "path"));
-
-var redirect = function redirect() {
-  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'gatsby-express.json';
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  var publicDir = options.publicDir || _path["default"].resolve('public/');
-
-  var template = _path["default"].resolve(publicDir, options.template);
-
-  if (typeof data === 'string') {
-    data = _fs["default"].readFileSync(data);
-    data = JSON.parse(data);
-  }
-
-  var join = function join(p) {
-    return _path["default"].join(publicDir, p);
-  };
-
-  var paths = data.pages.map(function (p) {
-    return p.path;
-  });
-  return function (req, res, next) {
-    try {
-      if (paths.indexOf(req.path) > -1) {
-        var index = _path["default"].resolve(join(req.path), 'index.html');
-
-        if (index) {
-          // remove trailing slashes in request
-          if (options.redirectSlashes && req.path.endsWith('/')) {
-            return res.redirect(req.path.substr(0, req.path.length - 1));
-          }
-
-          return res.sendFile(index);
-        }
-      }
-
-      return res.sendFile(template);
-    } catch (error) {
-      console.log(template);
-      throw error;
-    }
-  };
-};
-
-var _default = redirect;
-exports["default"] = _default;
-
-/***/ }),
-
 /***/ "./server/graphql/apollo.js":
 /*!**********************************!*\
   !*** ./server/graphql/apollo.js ***!
@@ -459,6 +392,8 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 exports.__esModule = true;
 exports["default"] = void 0;
 
+var _path = _interopRequireDefault(__webpack_require__(/*! path */ "path"));
+
 var _express = _interopRequireDefault(__webpack_require__(/*! express */ "express"));
 
 var _cors = _interopRequireDefault(__webpack_require__(/*! cors */ "cors"));
@@ -466,8 +401,6 @@ var _cors = _interopRequireDefault(__webpack_require__(/*! cors */ "cors"));
 var _compression = _interopRequireDefault(__webpack_require__(/*! compression */ "compression"));
 
 var _helmet = _interopRequireDefault(__webpack_require__(/*! helmet */ "helmet"));
-
-var _gatsbyPluginExpress = _interopRequireDefault(__webpack_require__(/*! ./gatsby/gatsby-plugin-express */ "./server/gatsby/gatsby-plugin-express.js"));
 
 var _apollo = _interopRequireDefault(__webpack_require__(/*! ./graphql/apollo */ "./server/graphql/apollo.js"));
 
@@ -495,13 +428,9 @@ var middleware = function middleware(app) {
     path: '/graphql'
   });
 
-  app.use((0, _gatsbyPluginExpress["default"])("config/gatsby-express.json", {
-    publicDir: 'public/',
-    template: '404/index.html',
-    // redirects all /path/ to /path
-    // should be used with gatsby-plugin-remove-trailing-slashes
-    redirectSlashes: true
-  }));
+  app.use(function (req, res, next) {
+    res.status(404).sendFile(_path["default"].resolve('public/', '404.html'));
+  });
 };
 
 var _default = middleware;

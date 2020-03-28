@@ -1,8 +1,8 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import compress from 'compression';
 import helmet from 'helmet';
-import redirect from './gatsby/gatsby-plugin-express';
 import server from './graphql/apollo';
 
 const middleware = app => {
@@ -29,16 +29,9 @@ const middleware = app => {
 
   server.applyMiddleware({ app, path: '/graphql' });
 
-  app.use(
-    redirect(`config/gatsby-express.json`, {
-      publicDir: 'public/',
-      template: '404/index.html',
-
-      // redirects all /path/ to /path
-      // should be used with gatsby-plugin-remove-trailing-slashes
-      redirectSlashes: true,
-    })
-  );
+  app.use((_req, res, _next) => {
+    res.status(404).sendFile(path.resolve('public/', '404.html'));
+  });
 };
 
 export default middleware;

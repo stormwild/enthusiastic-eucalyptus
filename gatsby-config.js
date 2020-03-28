@@ -41,12 +41,6 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-express',
-      options: {
-        output: 'config/gatsby-express.json',
-      },
-    },
-    {
       resolve: 'gatsby-source-graphql',
       options: {
         // Arbitrary name for the remote schema Query type
