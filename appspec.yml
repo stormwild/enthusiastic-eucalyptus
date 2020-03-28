@@ -8,7 +8,7 @@ permissions:
     pattern: '**'
     owner: ubuntu
     group: root
-    mode: 755
+    mode: 777
 hooks:
   BeforeInstall:
     - location: ops/before_install.sh
