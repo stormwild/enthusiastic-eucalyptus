@@ -6,9 +6,13 @@ files:
 hooks:
   BeforeInstall:
     - location: ops/before_install.sh
+      runas: ubuntu
   AfterInstall:
     - location: ops/after_install.sh
+      runas: ubuntu
   ApplicationStart:
     - location: ops/application_start.sh
+      runas: ubuntu
   ValidateService:
     - location: ops/validate_service.sh
+      runas: ubuntu
