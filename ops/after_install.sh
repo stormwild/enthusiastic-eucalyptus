@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Install dependencies
-sudo npm i
+cd /home/ubuntu/pcci
+npm i
 
 # Start the
 # npm run app:build
