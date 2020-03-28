@@ -7,7 +7,7 @@ permissions:
   - object: /home/ubuntu/pcci
     pattern: '**'
     owner: ubuntu
-    group: ubuntu
+    group: root
     mode: 755
 hooks:
   BeforeInstall:
