@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Install dependencies
+sudo chown -R $USER /home/ubuntu/pcci
 cd /home/ubuntu/pcci
 npm i
 
