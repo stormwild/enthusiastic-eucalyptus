@@ -11,8 +11,8 @@
     "test": "jest",
     "app:watch": "webpack --config webpack.config.babel.js -w",
     "app:build": "webpack --config webpack.config.babel.js",
-    "app:start": "NODE_ENV='development' nodemon server.js",
-    "app:serve": "NODE_ENV='production' node server.js"
+    "app:start": "NODE_ENV='development' nohup nodemon server.js >> app.log 2>&1 &",
+    "app:serve": "NODE_ENV='production' nohup node server.js >> app.log 2>&1 &"
   },
   "dependencies": {
     "@sindresorhus/slugify": "^0.11.0",
