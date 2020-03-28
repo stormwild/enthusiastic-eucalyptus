@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Install dependencies
-npm i
+sudo npm i
 
 # Start the
 # npm run app:build
