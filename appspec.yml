@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/pcci/
+hooks:
+  BeforeInstall:
+    - location: ops/before_install.sh
+  AfterInstall:
+    - location: ops/after_install.sh
+  ApplicationStart:
+    - location: ops/application_start.sh
+  ValidateService:
+    - location: ops/validate_service.sh
