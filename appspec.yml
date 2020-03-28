@@ -7,8 +7,6 @@ permissions:
   - object: /home/ubuntu/pcci
     pattern: '**'
     owner: ubuntu
-    group: root
-    mode: 777
 hooks:
   BeforeInstall:
     - location: ops/before_install.sh
