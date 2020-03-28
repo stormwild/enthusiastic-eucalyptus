@@ -3,6 +3,12 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/pcci/
+permissions:
+  - object: /home/ubuntu/pcci
+    pattern: '**'
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
 hooks:
   BeforeInstall:
     - location: ops/before_install.sh
