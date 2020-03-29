@@ -28,4 +28,10 @@ else
   NODE_ENV='development' npm run app:start
 fi
 
-NODE_ENV='development' npm run build
+APP_PID=$(lsof -t -i:3000)
+if ! [ -z "$APP_PID" ]; then
+  NODE_ENV='development' npm run build
+else
+  NODE_ENV='development' npm run app:start
+  NODE_ENV='development' npm run build
+fi
