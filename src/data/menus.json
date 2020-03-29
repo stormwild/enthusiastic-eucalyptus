@@ -1,1 +1,9 @@
-{}
+{
+  "main": [
+    {
+      "title": "Faculty",
+      "weight": 2,
+      "url": "/faculty/"
+    }
+  ]
+}

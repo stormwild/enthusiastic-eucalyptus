@@ -1,5 +1,28 @@
 scalar GraphQLDate
 
+type Role {
+  _id: ID!
+  name: String!
+}
+
+input UserInput {
+  username: String
+  password: String
+  email: String
+}
+
+type User {
+  _id: ID!
+  username: String!
+  password: String!
+  email: String!
+  roles: [Role!]!
+}
+
+input CourseCategoryInput {
+  name: String!
+}
+
 type CourseCategory {
   _id: ID!
   name: String!
@@ -27,6 +50,7 @@ input CourseInput {
   description: String!
   instructors: [ID!]!
   fee: Float
+  category: CourseCategoryInput
 }
 
 type Course {
@@ -36,6 +60,12 @@ type Course {
   instructors: [Instructor!]!
   fee: Float
   category: CourseCategory!
+}
+
+input ScheduleInput {
+  _id: ID
+  course: CourseInput!
+  dates: [GraphQLDate!]!
 }
 
 type Schedule {
@@ -50,15 +80,25 @@ type Student {
 }
 
 type Query {
-  instructors: [Instructor]
-  courseCategories: [CourseCategory]
   courses: [Course]
+  courseCategories: [CourseCategory]
+  instructors: [Instructor]
   schedules: [Schedule]
+  users: [User]
+  roles: [Role]
 }
 
 type Mutation {
-  addInstructor(instructor: InstructorInput!): Instructor!
-  updateInstructor(instructor: InstructorInput!): Instructor!
   addCourse(course: CourseInput!): Course!
-  updateCourse(course: CourseInput!): Course!
+  updateCourse(_id: ID!, course: CourseInput!): Course!
+  addCourseCategory(name: String!): CourseCategory!
+  updateCoureCategory(_id: ID!, name: String!): CourseCategory!
+  addInstructor(instructor: InstructorInput!): Instructor!
+  updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!
+  addRole(name: String): Role!
+  updateRole(_id: ID!, name: String): Role
+  addUser(user: UserInput!): User!
+  updateUser(_id: ID!, user: UserInput!): User!
+  addSchedule(schedule: ScheduleInput!): Schedule
+  updateSchedule(_id: ID!, schedule: ScheduleInput!): Schedule
 }

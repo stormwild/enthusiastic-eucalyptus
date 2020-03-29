@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Admin"
+  },
+  {
+    "name": "Staff"
+  },
+  {
+    "name": "Faculty"
+  },
+  {
+    "name": "Student"
+  }
+]

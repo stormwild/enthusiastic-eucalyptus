@@ -366,7 +366,7 @@ exports["default"] = _default;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "scalar GraphQLDate\n\ntype CourseCategory {\n  _id: ID!\n  name: String!\n}\n\ninput InstructorInput {\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [ID!]!\n}\n\ntype Instructor {\n  _id: ID!\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [Course!]!\n}\n\ninput CourseInput {\n  title: String!\n  description: String!\n  instructors: [ID!]!\n  fee: Float\n}\n\ntype Course {\n  _id: ID!\n  title: String!\n  description: String!\n  instructors: [Instructor!]!\n  fee: Float\n  category: CourseCategory!\n}\n\ntype Schedule {\n  _id: ID!\n  course: Course!\n  dates: [GraphQLDate!]!\n}\n\ntype Student {\n  _id: ID!\n  name: String!\n}\n\ntype Query {\n  instructors: [Instructor]\n  courseCategories: [CourseCategory]\n  courses: [Course]\n  schedules: [Schedule]\n}\n\ntype Mutation {\n  addInstructor(instructor: InstructorInput!): Instructor!\n  updateInstructor(instructor: InstructorInput!): Instructor!\n  addCourse(course: CourseInput!): Course!\n  updateCourse(course: CourseInput!): Course!\n}\n"
+module.exports = "scalar GraphQLDate\n\ntype Role {\n  _id: ID!\n  name: String!\n}\n\ninput UserInput {\n  username: String\n  password: String\n  email: String\n}\n\ntype User {\n  _id: ID!\n  username: String!\n  password: String!\n  email: String!\n  roles: [Role!]!\n}\n\ninput CourseCategoryInput {\n  name: String!\n}\n\ntype CourseCategory {\n  _id: ID!\n  name: String!\n}\n\ninput InstructorInput {\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [ID!]!\n}\n\ntype Instructor {\n  _id: ID!\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [Course!]!\n}\n\ninput CourseInput {\n  title: String!\n  description: String!\n  instructors: [ID!]!\n  fee: Float\n  category: CourseCategoryInput\n}\n\ntype Course {\n  _id: ID!\n  title: String!\n  description: String!\n  instructors: [Instructor!]!\n  fee: Float\n  category: CourseCategory!\n}\n\ninput ScheduleInput {\n  _id: ID\n  course: CourseInput!\n  dates: [GraphQLDate!]!\n}\n\ntype Schedule {\n  _id: ID!\n  course: Course!\n  dates: [GraphQLDate!]!\n}\n\ntype Student {\n  _id: ID!\n  name: String!\n}\n\ntype Query {\n  courses: [Course]\n  courseCategories: [CourseCategory]\n  instructors: [Instructor]\n  schedules: [Schedule]\n  users: [User]\n  roles: [Role]\n}\n\ntype Mutation {\n  addCourse(course: CourseInput!): Course!\n  updateCourse(_id: ID!, course: CourseInput!): Course!\n  addCourseCategory(name: String!): CourseCategory!\n  updateCoureCategory(_id: ID!, name: String!): CourseCategory!\n  addInstructor(instructor: InstructorInput!): Instructor!\n  updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!\n  addRole(name: String): Role!\n  updateRole(_id: ID!, name: String): Role\n  addUser(user: UserInput!): User!\n  updateUser(_id: ID!, user: UserInput!): User!\n  addSchedule(schedule: ScheduleInput!): Schedule\n  updateSchedule(_id: ID!, schedule: ScheduleInput!): Schedule\n}\n"
 
 /***/ }),
 
@@ -419,14 +419,7 @@ var middleware = function middleware(app) {
   _apollo["default"].applyMiddleware({
     app: app,
     path: '/graphql'
-  }); // app.use((err, req, res, next) => {
-  //   const match = /\/app\/[^\/]+/.test(req.path);
-  //   console.log('match: ', match);
-  //   if (match) {
-  //     res.status(200).sendFile(path.resolve('public/', 'app/index.html'));
-  //   }
-  // });
-
+  });
 
   app.use('/app/:path', function (err, req, res, next) {
     res.status(200).sendFile(_path["default"].resolve('public/', 'app/index.html'));

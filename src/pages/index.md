@@ -3,10 +3,9 @@ title: Home
 sections:
   - type: section_hero
     section_id: hero
-    title: This Is A Big Hero Headline
+    title: Philippine Center for Creative Imaging
     content: >-
-      Azimuth is the perfect theme for developers, designers and entrepreneurs
-      who need a sleek, modern SaaS site. 
+      Philippine Center for Creative Imaging (PCCI) is the country’s premier training center for digital media and photography.
     image: images/hero.png
     actions:
       - label: Learn More
@@ -15,33 +14,26 @@ sections:
     section_id: features
     title: Features
     subtitle: >-
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a metus
-      quis lorem malesuada luctus.
+      At PCCI, you’re taught by certified instructors and respected industry pros with years of experience. So you get, not only the basic how-tos, but also real-world techniques, do’s and don’ts, what works and what doesn’t.
     bg: gray
     featureslist:
-      - title: The Best Feature of Your Services
+      - title: Convenient Location
         content: >-
-          Nam pulvinar ante eu ultricies volutpat. Aenean hendrerit, eros sed
-          aliquet luctus, lorem risus volutpat dolor, nec dignissim diam neque
-          consequat ex.
+          Conveniently located in Metro Manila, our training facility provides a worry-free environment that lets you concentrate on your learning. Our after-training support is likewise unmatched in the industry.
         image: images/feature1.png
         actions:
           - label: Learn More
             url: /features
-      - title: Awesome Feature of Your Services
+      - title: State-of-the-Art Facility
         content: >-
-          Etiam vel urna sed massa egestas vulputate eu a velit. Sed ut nisl nec
-          sapien interdum luctus. Cras rhoncus condimentum metus sit amet
-          auctor.
+          PCCI’s fully networked facility offers each workshop participant the use of a Mac Pro or an iMac Core 2 Duo (with both OS X and Windows XP), a Wacom graphics tablet, as well as DVD-RW drives, flatbed scanners, high-end film scanner, and Canon photo-quality printers. PCCI also has a small library of books and periodicals for in-house use by class participants.
         image: images/feature2.png
         actions:
           - label: Learn More
             url: /features
-      - title: Cool Feature of Your Services
+      - title: Adobe Authorized Training Center
         content: >-
-          In ante enim, lobortis quis congue vel, finibus sit amet mi. Aenean
-          quis venenatis sem. Proin eget massa id metus eleifend maximus sit
-          amet nec urna.
+          PCCI is the first Adobe Authorized Training Center in the country. The AATC certification is your guarantee that PCCI's courses and training on Adobe products meet the Adobe standard of excellence.
         image: images/feature3.png
         actions:
           - label: Learn More
@@ -51,7 +43,7 @@ sections:
     title: Testimonials
     subtitle: >-
       Aliquam malesuada ligula eget est fringilla blandit. Integer finibus
-      semper libero id sodales. 
+      semper libero id sodales.
     bg: white
     reviews:
       - author: John Doe
