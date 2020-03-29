@@ -272,13 +272,7 @@ _mongoose["default"].connection.on('disconnected', function () {
 _mongoose["default"].connection.once('open', function () {
   console.log('Connection Successful!');
   (0, _instructors["default"])();
-  (0, _courseCategories["default"])(); // // a document instance
-  // var book1 = new Book({ name: 'Introduction to Mongoose', price: 10, quantity: 25 });
-  // // save model to database
-  // book1.save(function(err, book) {
-  //   if (err) return console.error(err);
-  //   console.log(book.name + ' saved to bookstore collection.');
-  // });
+  (0, _courseCategories["default"])();
 });
 
 /***/ }),
@@ -351,8 +345,7 @@ var resolvers = {
     addInstructor: addInstructor
   },
   GraphQLDate: GraphQLDate
-}; // fs.readFileSync('./schema/schema.gql', 'utf-8')
-
+};
 var server = new _apolloServerExpress.ApolloServer({
   typeDefs: _schema["default"],
   resolvers: resolvers,
@@ -428,8 +421,12 @@ var middleware = function middleware(app) {
     path: '/graphql'
   });
 
-  app.use(function (req, res, next) {
-    res.status(404).sendFile(_path["default"].resolve('public/', '404.html'));
+  app.use(function (_req, res, _next) {
+    res.status(404).sendFile(_path["default"].resolve('public/', '404/index.html'));
+  });
+  app.use(function (err, _req, res, _next) {
+    console.log('Error occurred: ', err);
+    res.status(500).sendFile(_path["default"].resolve('public/', '500/index.html'));
   });
 };
 

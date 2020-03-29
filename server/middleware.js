@@ -30,7 +30,12 @@ const middleware = app => {
   server.applyMiddleware({ app, path: '/graphql' });
 
   app.use((_req, res, _next) => {
-    res.status(404).sendFile(path.resolve('public/', '404.html'));
+    res.status(404).sendFile(path.resolve('public/', '404/index.html'));
+  });
+
+  app.use((err, _req, res, _next) => {
+    console.log('Error occurred: ', err);
+    res.status(500).sendFile(path.resolve('public/', '500/index.html'));
   });
 };
 

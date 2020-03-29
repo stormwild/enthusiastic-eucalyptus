@@ -5,8 +5,7 @@ import moment from 'moment-strftime';
 import { Layout } from '../components/index';
 import { safePrefix } from '../utils';
 
-// const {education: {degree} = {}} = user;
-const Post = props => {
+const Instructor = props => {
   const {
     pageContext: {
       instructor: { name, photo, bio },
@@ -32,4 +31,4 @@ const Post = props => {
     </Layout>
   );
 };
-export default Post;
+export default Instructor;

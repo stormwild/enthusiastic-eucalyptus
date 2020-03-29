@@ -1,0 +1,337 @@
+[
+  {
+    "url": "/features/",
+    "relativePath": "features.md",
+    "relativeDir": "",
+    "base": "features.md",
+    "name": "features",
+    "frontmatter": {
+      "title": "Features",
+      "sections": [
+        {
+          "type": "section_content",
+          "section_id": "features",
+          "title": "The Best Features of Your Services",
+          "content": "Nam pulvinar ante eu ultricies volutpat. Sed nulla nibh, dapibus sit amet cursus quis, fringilla nec sapien. Vestibulum imperdiet nunc bibendum consectetur lobortis.\n\n* Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n* Ut eu nunc at diam fringilla fringilla eu ut massa.\n* Phasellus ut enim non lorem venenatis rutrum.\n\nMollis eget congue quis, venenatis sit amet metus. Etiam sit amet tortor sed justo tempor condimentum.",
+          "image": "images/feature1.png",
+          "bg": "gray",
+          "actions": [
+            {
+              "label": "Free Trial",
+              "url": "/signup"
+            },
+            {
+              "label": "View Demo",
+              "url": "#"
+            }
+          ]
+        },
+        {
+          "type": "section_cta",
+          "section_id": "call-to-action",
+          "title": "This Is Call to Action Block!",
+          "subtitle": "This is an optional description for the call to action block.",
+          "actions": [
+            {
+              "label": "Get Started",
+              "url": "#"
+            }
+          ]
+        }
+      ],
+      "menus": {
+        "main": {
+          "title": "Features",
+          "weight": 2
+        }
+      },
+      "template": "landing"
+    },
+    "html": ""
+  },
+  {
+    "url": "/contact/",
+    "relativePath": "contact.md",
+    "relativeDir": "",
+    "base": "contact.md",
+    "name": "contact",
+    "frontmatter": {
+      "title": "Contact",
+      "sections": [
+        {
+          "type": "section_contact",
+          "section_id": "contact",
+          "title": "Contact",
+          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a metus quis lorem malesuada luctus. Cras lacinia, eros at dapibus molestie, risus tortor pretium ligula.",
+          "bg": "gray"
+        }
+      ],
+      "menus": {
+        "secondary": {
+          "title": "Contact",
+          "weight": 3
+        }
+      },
+      "template": "landing"
+    },
+    "html": ""
+  },
+  {
+    "url": "/404/",
+    "relativePath": "404.md",
+    "relativeDir": "",
+    "base": "404.md",
+    "name": "404",
+    "frontmatter": {
+      "title": "404 Not Found",
+      "sections": [
+        {
+          "type": "section_content",
+          "section_id": "notfound",
+          "title": "Not Found 404",
+          "content": "Sorry that page does not exist.",
+          "image": "images/feature1.png",
+          "bg": "gray",
+          "actions": [
+            {
+              "label": "Home",
+              "url": "/"
+            },
+            {
+              "label": "Help",
+              "url": "#"
+            }
+          ]
+        }
+      ],
+      "template": "landing"
+    },
+    "html": ""
+  },
+  {
+    "url": "/about/",
+    "relativePath": "about.md",
+    "relativeDir": "",
+    "base": "about.md",
+    "name": "about",
+    "frontmatter": {
+      "title": "About Us",
+      "subtitle": "This is an optional subtitle. It can be used to describe what this page is about.",
+      "img_path": "images/about.jpg",
+      "menus": {
+        "secondary": {
+          "title": "About Us",
+          "weight": 1
+        }
+      },
+      "template": "page"
+    },
+    "html": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a metus quis lorem malesuada luctus. Cras lacinia, eros at dapibus molestie, risus tortor pretium ligula, eu malesuada tortor eros dapibus mi. Proin laoreet efficitur suscipit. Donec molestie volutpat euismod. Nulla gravida ligula in eros facilisis, sed dignissim tellus aliquam. Etiam convallis enim nisi, at suscipit tortor pulvinar at. Nulla a interdum lacus. Sed a porttitor mi. Sed at risus eu orci ultricies mattis sed in tellus. Cras nec neque sed dui vehicula iaculis id vel ex. Phasellus non consectetur augue. Pellentesque condimentum sapien arcu, nec tempus nunc maximus eu. Duis blandit risus nulla. In dolor dui, placerat non finibus sit amet, venenatis pretium tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Nunc a lorem tellus. Aenean eu auctor purus. Cras pulvinar, nunc at sagittis dignissim, orci elit auctor leo, et consectetur est turpis a nunc. Vivamus in faucibus felis. Aenean rutrum magna at ex auctor, congue efficitur ligula feugiat. Proin a egestas arcu. Etiam feugiat turpis quis mollis pellentesque. Sed posuere luctus tortor, a eleifend augue varius sit amet. Integer ultrices neque sed quam dictum, quis vestibulum justo volutpat. Nam vitae tempus leo, ut mattis mi.</p>"
+  },
+  {
+    "url": "/signup/",
+    "relativePath": "signup.md",
+    "relativeDir": "",
+    "base": "signup.md",
+    "name": "signup",
+    "frontmatter": {
+      "title": "Sign Up",
+      "subtitle": "This is an optional subtitle. It can be used to describe what this page is about.",
+      "img_path": "images/11.jpg",
+      "menus": {
+        "secondary": {
+          "title": "Sign Up",
+          "weight": 1
+        }
+      },
+      "template": "page"
+    },
+    "html": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a metus quis lorem malesuada luctus. Cras lacinia, eros at dapibus molestie, risus tortor pretium ligula, eu malesuada tortor eros dapibus mi. Proin laoreet efficitur suscipit. Donec molestie volutpat euismod. Nulla gravida ligula in eros facilisis, sed dignissim tellus aliquam. Etiam convallis enim nisi, at suscipit tortor pulvinar at. Nulla a interdum lacus. Sed a porttitor mi. Sed at risus eu orci ultricies mattis sed in tellus. Cras nec neque sed dui vehicula iaculis id vel ex. Phasellus non consectetur augue. Pellentesque condimentum sapien arcu, nec tempus nunc maximus eu. Duis blandit risus nulla. In dolor dui, placerat non finibus sit amet, venenatis pretium tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n<p>Nunc a lorem tellus. Aenean eu auctor purus. Cras pulvinar, nunc at sagittis dignissim, orci elit auctor leo, et consectetur est turpis a nunc. Vivamus in faucibus felis. Aenean rutrum magna at ex auctor, congue efficitur ligula feugiat. Proin a egestas arcu. Etiam feugiat turpis quis mollis pellentesque. Sed posuere luctus tortor, a eleifend augue varius sit amet. Integer ultrices neque sed quam dictum, quis vestibulum justo volutpat. Nam vitae tempus leo, ut mattis mi.</p>"
+  },
+  {
+    "url": "/",
+    "relativePath": "index.md",
+    "relativeDir": "",
+    "base": "index.md",
+    "name": "index",
+    "frontmatter": {
+      "title": "Home",
+      "sections": [
+        {
+          "type": "section_hero",
+          "section_id": "hero",
+          "title": "This Is A Big Hero Headline",
+          "content": "Azimuth is the perfect theme for developers, designers and entrepreneurs who need a sleek, modern SaaS site. ",
+          "image": "images/hero.png",
+          "actions": [
+            {
+              "label": "Learn More",
+              "url": "/features"
+            }
+          ]
+        },
+        {
+          "type": "section_features",
+          "section_id": "features",
+          "title": "Features",
+          "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a metus quis lorem malesuada luctus.",
+          "bg": "gray",
+          "featureslist": [
+            {
+              "title": "The Best Feature of Your Services",
+              "content": "Nam pulvinar ante eu ultricies volutpat. Aenean hendrerit, eros sed aliquet luctus, lorem risus volutpat dolor, nec dignissim diam neque consequat ex.",
+              "image": "images/feature1.png",
+              "actions": [
+                {
+                  "label": "Learn More",
+                  "url": "/features"
+                }
+              ]
+            },
+            {
+              "title": "Awesome Feature of Your Services",
+              "content": "Etiam vel urna sed massa egestas vulputate eu a velit. Sed ut nisl nec sapien interdum luctus. Cras rhoncus condimentum metus sit amet auctor.",
+              "image": "images/feature2.png",
+              "actions": [
+                {
+                  "label": "Learn More",
+                  "url": "/features"
+                }
+              ]
+            },
+            {
+              "title": "Cool Feature of Your Services",
+              "content": "In ante enim, lobortis quis congue vel, finibus sit amet mi. Aenean quis venenatis sem. Proin eget massa id metus eleifend maximus sit amet nec urna.",
+              "image": "images/feature3.png",
+              "actions": [
+                {
+                  "label": "Learn More",
+                  "url": "/features"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "section_reviews",
+          "section_id": "reviews",
+          "title": "Testimonials",
+          "subtitle": "Aliquam malesuada ligula eget est fringilla blandit. Integer finibus semper libero id sodales. ",
+          "bg": "white",
+          "reviews": [
+            {
+              "author": "John Doe",
+              "avatar": "images/review1.jpg",
+              "content": "Vestibulum a nunc ut eros condimentum posuere. Nullam dapibus quis nunc non interdum. Pellentesque tortor ligula, gravida ac commodo eu."
+            },
+            {
+              "author": "Jane Roe",
+              "avatar": "images/review2.jpg",
+              "content": "Sed laoreet magna commodo libero euismod sodales. Nunc ac libero convallis, interdum ligula vel, pretium diam. Integer commodo sem at dui sollicitudin, vel posuere justo laoreet."
+            },
+            {
+              "author": "Richard Roe",
+              "avatar": "images/review3.jpg",
+              "content": "Integer consectetur purus neque, ac porttitor enim convallis vitae. Interdum et malesuada fames ac ante ipsum primis in faucibus."
+            }
+          ]
+        },
+        {
+          "type": "section_cta",
+          "section_id": "call-to-action",
+          "title": "This Is Call To Action Block!",
+          "subtitle": "This is an optional description for the call to action block.",
+          "actions": [
+            {
+              "label": "Get Started",
+              "url": "/signup"
+            }
+          ]
+        },
+        {
+          "type": "section_posts",
+          "section_id": "recent-posts",
+          "title": "Latest Posts",
+          "bg": "gray"
+        }
+      ],
+      "menus": {
+        "main": {
+          "title": "Home",
+          "weight": 1
+        }
+      },
+      "template": "landing"
+    },
+    "html": ""
+  },
+  {
+    "url": "/pricing/",
+    "relativePath": "pricing.md",
+    "relativeDir": "",
+    "base": "pricing.md",
+    "name": "pricing",
+    "frontmatter": {
+      "title": "Pricing",
+      "sections": [
+        {
+          "type": "section_pricing",
+          "section_id": "pricing",
+          "title": "Pricing Plans",
+          "subtitle": "You can have a separate pricing page or list everything on the home page.",
+          "bg": "gray",
+          "pricingplans": [
+            {
+              "title": "Basic",
+              "price": "$5/m",
+              "details": "* Lorem ipsum dolor sit amet\n* Mauris a mi tincidunt\n* Suspendisse ut lacus\n* Etiam eget dui a augue",
+              "actions": [
+                {
+                  "label": "Order Now",
+                  "url": "/signup"
+                }
+              ]
+            },
+            {
+              "title": "Professional",
+              "price": "$49/m",
+              "details": "* Curabitur non nunc mollis\n* Duis a purus nec ligula\n* Pellentesque sit amet\n* Fusce tempus mi vitae\n* Nullam sollicitudin ante",
+              "highlight": true,
+              "actions": [
+                {
+                  "label": "Order Now",
+                  "url": "/signup"
+                }
+              ]
+            },
+            {
+              "title": "Enterprise",
+              "price": "$149/m",
+              "details": "* Vestibulum non eros quis\n* Aenean iaculis lorem\n* Mauris eleifend sapien\n* Phasellus lobortis risus",
+              "actions": [
+                {
+                  "label": "Order Now",
+                  "url": "/signup"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "section_faq",
+          "section_id": "faq",
+          "title": "Frequently Asked Questions",
+          "subtitle": "Phasellus luctus laoreet arcu, vel porta metus imperdiet sit amet.",
+          "bg": "gray",
+          "faqitems": [
+            {
+              "question": "Mauris ut tellus id arcu sagittis lacinia quis vel justo?",
+              "answer": "Ut cursus, nunc vitae hendrerit viverra, massa ipsum congue quam, sed tempus mauris lacus sit amet nibh. Curabitur laoreet est maximus mollis feugiat. Praesent nibh libero, placerat et justo at, luctus tristique enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
+            },
+            {
+              "question": "Aliquam eget purus ante?",
+              "answer": "Nunc sollicitudin libero tincidunt felis pretium, consectetur aliquam eros placerat. Sed neque neque, bibendum a pulvinar id, pellentesque eget velit. "
+            },
+            {
+              "question": "Sed scelerisque in ipsum eu sollicitudin?",
+              "answer":"Nullam quis ultrices ipsum. Integer eleifend laoreet quam, ac dignissim nisi mollis eget. Ut vitae nisi sit amet nisi suscipit dictum faucibus eget magna. Vivamus i…

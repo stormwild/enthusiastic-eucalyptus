@@ -53,12 +53,4 @@ mongoose.connection.once('open', () => {
 
   initInstructors();
   initCourseCategories();
-  // // a document instance
-  // var book1 = new Book({ name: 'Introduction to Mongoose', price: 10, quantity: 25 });
-
-  // // save model to database
-  // book1.save(function(err, book) {
-  //   if (err) return console.error(err);
-  //   console.log(book.name + ' saved to bookstore collection.');
-  // });
 });

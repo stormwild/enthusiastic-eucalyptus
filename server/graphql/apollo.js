@@ -45,7 +45,6 @@ const resolvers = {
   GraphQLDate,
 };
 
-// fs.readFileSync('./schema/schema.gql', 'utf-8')
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,

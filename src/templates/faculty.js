@@ -1,45 +1,44 @@
 import React from 'react';
-import _ from 'lodash';
-import moment from 'moment-strftime';
+import { Layout } from '../components/index';
+import { Link, safePrefix } from '../utils';
 
-import {Layout} from '../components/index';
-import {getPages, Link, safePrefix} from '../utils';
-
-export default class Blog extends React.Component {
-    render() {
-        let display_posts = _.orderBy(getPages(this.props.pageContext.pages, '/instructors'), 'frontmatter.date', 'desc');
-        return (
-            <Layout {...this.props}>
-            <div className="outer">
-              <div className="inner">
-                <div className="post-feed">
-                  {_.map(display_posts, (post, post_idx) => (
-                  <article key={post_idx} className="post post-card">
-                    <div className="post-card-inside">
-                      {_.get(post, 'frontmatter.thumb_img_path') && 
-                      <Link className="post-card-thumbnail" to={safePrefix(_.get(post, 'url'))}>
-                        <img className="thumbnail" src={safePrefix(_.get(post, 'frontmatter.thumb_img_path'))} alt={_.get(post, 'frontmatter.name')} />
-                      </Link>
-                      }
-                      <div className="post-card-content">
-                        <header className="post-header">
-                          <h2 className="post-title"><Link to={safePrefix(_.get(post, 'url'))} rel="bookmark">{_.get(post, 'frontmatter.name')}</Link></h2>
-                        </header>
-                        <div className="post-excerpt">
-                          <p>{_.get(post, 'frontmatter.excerpt')}</p>
-                        </div>
-                        <footer className="post-meta">
-                          <time className="published"
-                            dateTime={moment(_.get(post, 'frontmatter.date')).strftime('%Y-%m-%d %H:%M')}>{moment(_.get(post, 'frontmatter.date')).strftime('%B %d, %Y')}</time>
-                        </footer>
-                      </div>
+const Faculty = props => {
+  const {
+    pageContext: { instructors },
+  } = props;
+  return (
+    <Layout {...props}>
+      <div className="outer">
+        <div className="inner">
+          <div className="post-feed">
+            {instructors.map(({ _id, name, photo, excerpt, slug }) => (
+              <article key={_id} className="post post-card">
+                <div className="post-card-inside">
+                  {photo && (
+                    <Link className="post-card-thumbnail" to={safePrefix(slug)}>
+                      <img className="thumbnail" src={safePrefix(photo)} alt={name} />
+                    </Link>
+                  )}
+                  <div className="post-card-content">
+                    <header className="post-header">
+                      <h2 className="post-title">
+                        <Link to={safePrefix(slug)} rel="bookmark">
+                          {name}
+                        </Link>
+                      </h2>
+                    </header>
+                    <div className="post-excerpt">
+                      <p>{excerpt}</p>
                     </div>
-                  </article>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-            </Layout>
-        );
-    }
-}
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Faculty;
