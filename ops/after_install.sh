@@ -12,6 +12,6 @@ cp /home/ubuntu/.env.staging /home/ubuntu/pcci
 cp /home/ubuntu/.env.production /home/ubuntu/pcci
 
 # Start the app
-npm run app:build
-npm run app:start
-npm run build
+# npm run app:build
+# npm run app:start
+# npm run build
