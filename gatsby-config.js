@@ -51,6 +51,6 @@ module.exports = {
         url: `${process.env.PCCI_API_GRAPHQL_URL || 'http://localhost:3000/graphql'}`,
       },
     },
-    'gatsby-plugin-pcci-instructor',
+    'gatsby-plugin-pcci',
   ],
 };

@@ -419,8 +419,18 @@ var middleware = function middleware(app) {
   _apollo["default"].applyMiddleware({
     app: app,
     path: '/graphql'
-  });
+  }); // app.use((err, req, res, next) => {
+  //   const match = /\/app\/[^\/]+/.test(req.path);
+  //   console.log('match: ', match);
+  //   if (match) {
+  //     res.status(200).sendFile(path.resolve('public/', 'app/index.html'));
+  //   }
+  // });
 
+
+  app.use('/app/:path', function (err, req, res, next) {
+    res.status(200).sendFile(_path["default"].resolve('public/', 'app/index.html'));
+  });
   app.use(function (_req, res, _next) {
     res.status(404).sendFile(_path["default"].resolve('public/', '404/index.html'));
   });
