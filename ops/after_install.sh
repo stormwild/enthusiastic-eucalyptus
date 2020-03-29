@@ -20,5 +20,12 @@ fi
 
 # Start the app
 NODE_ENV='test' npm run app:build
-NODE_ENV='development' npm run app:start
+
+APP_PID=$(lsof -t -i:3000)
+if ! [ -z "$APP_PID" ]; then
+  kill -9 $APP_PID
+else
+  NODE_ENV='development' npm run app:start
+fi
+
 NODE_ENV='development' npm run build

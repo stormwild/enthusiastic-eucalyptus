@@ -11,8 +11,8 @@
     "test": "jest",
     "app:watch": "webpack --config webpack.config.babel.js -w",
     "app:build": "webpack --config webpack.config.babel.js",
-    "app:start": "pkill -9 node && nohup nodemon server.js >> app.log 2>&1 &",
-    "app:serve": "pkill -9 node nohup node server.js >> app.log 2>&1 &"
+    "app:start": "nohup nodemon server.js >> app.log 2>&1 &",
+    "app:serve": "nohup node server.js >> app.log 2>&1 &"
   },
   "dependencies": {
     "@sindresorhus/slugify": "^0.11.0",
