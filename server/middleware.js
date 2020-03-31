@@ -15,7 +15,14 @@ const middleware = app => {
     helmet.contentSecurityPolicy({
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net', "'unsafe-eval'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'cdn.jsdelivr.net',
+          "'unsafe-eval'",
+          'identity.netlify.com',
+          'unpkg.com',
+        ],
         styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com', 'cdn.jsdelivr.net'],
         imgSrc: ["'self'", 'data:', '*.amazonaws.com', 'cdn.jsdelivr.net'],
         fontSrc: ["'self'", 'fonts.gstatic.com'],
