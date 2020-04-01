@@ -1,31 +1,9 @@
 scalar GraphQLDate
 
-type Role {
-  _id: ID!
-  name: String!
-}
-
 input UserInput {
   username: String
   password: String
   email: String
-}
-
-type User {
-  _id: ID!
-  username: String!
-  password: String!
-  email: String!
-  roles: [Role!]!
-}
-
-input CourseCategoryInput {
-  name: String!
-}
-
-type CourseCategory {
-  _id: ID!
-  name: String!
 }
 
 input InstructorInput {
@@ -36,13 +14,8 @@ input InstructorInput {
   courses: [ID!]!
 }
 
-type Instructor {
-  _id: ID!
+input CourseCategoryInput {
   name: String!
-  photo: String
-  excerpt: String
-  bio: String
-  courses: [Course!]!
 }
 
 input CourseInput {
@@ -51,6 +24,33 @@ input CourseInput {
   instructors: [ID!]!
   fee: Float
   category: CourseCategoryInput
+}
+
+type Role {
+  _id: ID!
+  name: String!
+}
+
+type User {
+  _id: ID!
+  username: String!
+  password: String!
+  email: String!
+  roles: [Role!]!
+}
+
+type CourseCategory {
+  _id: ID!
+  name: String!
+}
+
+type Instructor {
+  _id: ID!
+  name: String!
+  photo: String
+  excerpt: String
+  bio: String
+  courses: [Course!]!
 }
 
 type Course {
@@ -80,25 +80,32 @@ type Student {
 }
 
 type Query {
-  courses: [Course]
   courseCategories: [CourseCategory]
   instructors: [Instructor]
+  courses: [Course]
   schedules: [Schedule]
   users: [User]
   roles: [Role]
+
+  courseCategory(id: ID!): CourseCategory
 }
 
 type Mutation {
-  addCourse(course: CourseInput!): Course!
-  updateCourse(_id: ID!, course: CourseInput!): Course!
   addCourseCategory(name: String!): CourseCategory!
   updateCoureCategory(_id: ID!, name: String!): CourseCategory!
+
   addInstructor(instructor: InstructorInput!): Instructor!
   updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!
+
+  addCourse(course: CourseInput!): Course!
+  updateCourse(_id: ID!, course: CourseInput!): Course!
+
   addRole(name: String): Role!
   updateRole(_id: ID!, name: String): Role
+
   addUser(user: UserInput!): User!
   updateUser(_id: ID!, user: UserInput!): User!
+
   addSchedule(schedule: ScheduleInput!): Schedule
   updateSchedule(_id: ID!, schedule: ScheduleInput!): Schedule
 }

@@ -11,8 +11,8 @@
     "test": "jest",
     "app:watch": "webpack --config webpack.config.babel.js -w",
     "app:build": "webpack --config webpack.config.babel.js",
-    "app:start": "nohup nodemon server.js >> app.log 2>&1 & echo $! > mon_pid.txt",
-    "app:serve": "nohup node server.js >> app.log 2>&1 & echo $! > node_pid.txt"
+    "app:start": "nohup nodemon server.js > app.log 2>&1 & echo $! > mon_pid.txt",
+    "app:serve": "nohup node server.js > app.log 2>&1 & echo $! > node_pid.txt"
   },
   "dependencies": {
     "@sindresorhus/slugify": "^0.11.0",

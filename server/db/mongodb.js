@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import readline from 'readline';
-import { initInstructors, initCourses, initCourseCategories } from './scipts/seed';
+import { initInstructors, initCourses, initCourseCategories } from './scipts/seeder';
 
 if (process.platform === 'win32') {
   const rl = readline.createInterface({

@@ -1,7 +1,7 @@
 import { CourseCategory, Instructor, Course } from '../models';
 import courseCategoriesData from '../data/course-categories.json';
 import instructorsData from '../data/instructors.json';
-import courses from '../data/courses.json';
+import coursesData from '../data/courses.json';
 
 export const initCourseCategories = () => {
   CourseCategory.countDocuments((err, count) => {
@@ -24,10 +24,22 @@ export const initInstructors = () => {
 };
 
 export const initCourses = () => {
-  Course.countDocuments((err, count) => {
-    if (count == 0) {
-      Course.collection.insertMany(courses, (err, docs) => {
-        console.log(`Courses seeded. Inserted: ${docs.insertedCount}`);
+  CourseCategory.countDocuments((err, count) => {
+    if (count > 0) {
+      CourseCategory.find((err, categories) => {
+        const courses = coursesData.map(course => {
+          let category = categories.find(c => c.name == course.category.name);
+          course.category = category ? category._id : null;
+          return course;
+        });
+
+        Course.countDocuments((err, count) => {
+          if (count == 0) {
+            Course.collection.insertMany(courses, (err, docs) => {
+              console.log(`Courses seeded. Inserted: ${docs.insertedCount}`);
+            });
+          }
+        });
       });
     }
   });
