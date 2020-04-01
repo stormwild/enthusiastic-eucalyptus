@@ -78,3 +78,8 @@ yarn-error.log
 .env.development
 .env.staging
 .env.production
+
+## Scripts
+
+mon_pid.txt
+node_pid.txt

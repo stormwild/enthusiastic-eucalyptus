@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import readline from 'readline';
-import initInstructors from './models/instructors';
-import initCourseCategories from './models/course-categories';
+import { initInstructors, initCourses, initCourseCategories } from './scipts/seed';
 
 if (process.platform === 'win32') {
   const rl = readline.createInterface({
@@ -51,6 +50,7 @@ mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'
 mongoose.connection.once('open', () => {
   console.log('Connection Successful!');
 
-  initInstructors();
   initCourseCategories();
+  initInstructors();
+  initCourses();
 });
