@@ -2,6 +2,8 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+console.log(`Graphql url: ${process.env.PCCI_API_GRAPHQL_URL}`);
+
 module.exports = {
   pathPrefix: '/',
   siteMetadata: require('./site-metadata.json'),
@@ -48,7 +50,7 @@ module.exports = {
         // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
         fieldName: 'pcci',
         // Url to query from
-        url: `${process.env.PCCI_API_GRAPHQL_URL || 'https://127.0.0.1'}`,
+        url: `${process.env.PCCI_API_GRAPHQL_URL || 'http://127.0.0.1:3000/graphql'}`,
       },
     },
     'gatsby-plugin-pcci',
