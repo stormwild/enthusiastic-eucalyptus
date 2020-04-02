@@ -83,3 +83,11 @@ yarn-error.log
 
 mon_pid.txt
 node_pid.txt
+
+## Private
+
+private/
+
+## GitKeep
+
+!/**/.gitkeep

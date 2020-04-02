@@ -1,6 +1,11 @@
 {
   "main": [
     {
+      "title": "Courses",
+      "weight": 2,
+      "url": "/courses/"
+    },
+    {
       "title": "Faculty",
       "weight": 2,
       "url": "/faculty/"
