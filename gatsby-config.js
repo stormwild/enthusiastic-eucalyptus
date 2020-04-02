@@ -48,7 +48,7 @@ module.exports = {
         // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
         fieldName: 'pcci',
         // Url to query from
-        url: `${process.env.PCCI_API_GRAPHQL_URL}`,
+        url: `${process.env.PCCI_API_GRAPHQL_URL || 'https://127.0.0.1'}`,
       },
     },
     'gatsby-plugin-pcci',
