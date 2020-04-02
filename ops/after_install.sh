@@ -6,8 +6,6 @@ cd /home/ubuntu/pcci
 npm i
 
 # Not secure, temporary
-# cp /home/ubuntu/.env /home/ubuntu/pcci
-# cp /home/ubuntu/.env.staging /home/ubuntu/pcci
 # cp /home/ubuntu/.env.production /home/ubuntu/pcci
 
 FILE=/home/ubuntu/.env.production
@@ -21,17 +19,14 @@ fi
 # Start the app
 NODE_ENV='production' npm run app:build
 
-APP_PID=$(lsof -t -i:443)
-HTTP_PID=$(lsof -t -i:80)
+APP_PID=$(lsof -t -i:3000)
 if ! [ -z "$APP_PID" ]; then
   kill -9 $APP_PID
-  kill -9 $HTTP_PID
 else
   NODE_ENV='production' npm run app:start
 fi
 
-APP_PID=$(lsof -t -i:443)
-HTTP_PID=$(lsof -t -i:80)
+APP_PID=$(lsof -t -i:3000)
 if ! [ -z "$APP_PID" ]; then
   NODE_ENV='production' npm run build
 else

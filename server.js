@@ -704,12 +704,6 @@ exports["default"] = _default;
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
-var _https = _interopRequireDefault(__webpack_require__(/*! https */ "https"));
-
-var _http = _interopRequireDefault(__webpack_require__(/*! http */ "http"));
-
-var _fs = _interopRequireDefault(__webpack_require__(/*! fs */ "fs"));
-
 var _express = _interopRequireDefault(__webpack_require__(/*! express */ "express"));
 
 var _middleware = _interopRequireDefault(__webpack_require__(/*! ./middleware */ "./server/middleware.js"));
@@ -720,28 +714,12 @@ __webpack_require__(/*! dotenv */ "dotenv").config({
   path: ".env.".concat("development")
 });
 
-var _process$env = process.env,
-    HOST = _process$env.HOST,
-    PORT = _process$env.PORT;
-var config = {
-  key: _fs["default"].readFileSync(process.env.SSL_KEY),
-  cert: _fs["default"].readFileSync(process.env.SSL_CRT)
-};
+var PORT = process.env.PORT;
 var app = (0, _express["default"])();
 (0, _middleware["default"])(app);
-
-var server = _https["default"].createServer(config, app);
-
-server.listen(443, function () {
-  console.log("App started on host: ".concat(HOST, " and port:").concat(PORT));
+app.listen(PORT, function () {
+  console.log("App started on http://localhost:".concat(PORT));
 });
-
-_http["default"].createServer(function (req, res) {
-  res.writeHead(301, {
-    Location: 'https://' + req.headers['host'] + req.url
-  });
-  res.end();
-}).listen(80);
 
 /***/ }),
 
@@ -844,17 +822,6 @@ module.exports = require("express");
 
 /***/ }),
 
-/***/ "fs":
-/*!*********************!*\
-  !*** external "fs" ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-
 /***/ "graphql":
 /*!**************************!*\
   !*** external "graphql" ***!
@@ -885,28 +852,6 @@ module.exports = require("graphql/language");
 /***/ (function(module, exports) {
 
 module.exports = require("helmet");
-
-/***/ }),
-
-/***/ "http":
-/*!***********************!*\
-  !*** external "http" ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("http");
-
-/***/ }),
-
-/***/ "https":
-/*!************************!*\
-  !*** external "https" ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("https");
 
 /***/ }),
 
