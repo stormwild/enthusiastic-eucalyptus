@@ -653,20 +653,27 @@ var _apollo = _interopRequireDefault(__webpack_require__(/*! ./graphql/apollo */
 
 var middleware = function middleware(app) {
   app.use((0, _cors["default"])());
-  app.use((0, _compression["default"])());
-  app.use((0, _helmet["default"])());
-  app.use(_helmet["default"].contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net', "'unsafe-eval'", 'identity.netlify.com', 'unpkg.com'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com', 'cdn.jsdelivr.net'],
-      imgSrc: ["'self'", 'data:', '*.amazonaws.com', 'cdn.jsdelivr.net'],
-      fontSrc: ["'self'", 'fonts.gstatic.com']
-    }
-  }));
-  app.use(_helmet["default"].referrerPolicy({
-    policy: 'same-origin'
-  })); // serve static files before gatsbyExpress
+  app.use((0, _compression["default"])()); // app.use(helmet());
+  // app.use(
+  //   helmet.contentSecurityPolicy({
+  //     directives: {
+  //       defaultSrc: ["'self'"],
+  //       scriptSrc: [
+  //         "'self'",
+  //         "'unsafe-inline'",
+  //         'cdn.jsdelivr.net',
+  //         "'unsafe-eval'",
+  //         'identity.netlify.com',
+  //         'unpkg.com',
+  //       ],
+  //       styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com', 'cdn.jsdelivr.net'],
+  //       imgSrc: ["'self'", 'data:', '*.amazonaws.com', 'cdn.jsdelivr.net'],
+  //       fontSrc: ["'self'", 'fonts.gstatic.com'],
+  //     },
+  //   })
+  // );
+  // app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+  // serve static files before gatsbyExpress
 
   app.use(_express["default"]["static"]('public/'));
 
@@ -676,14 +683,33 @@ var middleware = function middleware(app) {
   });
 
   app.use('/app/:path', function (err, req, res, next) {
-    res.status(200).sendFile(_path["default"].resolve('public/', 'app/index.html'));
+    var appPath = _path["default"].resolve('public/', 'app/index.html');
+
+    if (fs.existsSync(appPath)) {
+      res.status(200).sendFile(appPath);
+    }
+
+    res.status(200).send('ok');
   });
   app.use(function (_req, res, _next) {
-    res.status(404).sendFile(_path["default"].resolve('public/', '404/index.html'));
+    var notFoundPath = _path["default"].resolve('public/', '404/index.html');
+
+    if (fs.existsSync(notFoundPath)) {
+      res.status(404).sendFile(notFoundPath);
+    }
+
+    res.status(200).send('ok');
   });
   app.use(function (err, _req, res, _next) {
     console.log('Error occurred: ', err);
-    res.status(500).sendFile(_path["default"].resolve('public/', '500/index.html'));
+
+    var serverErrorPath = _path["default"].resolve('public/', '500/index.html');
+
+    if (fs.existsSync(serverErrorPath)) {
+      res.status(500).sendFile(serverErrorPath);
+    }
+
+    res.status(200).send('ok');
   });
 };
 
