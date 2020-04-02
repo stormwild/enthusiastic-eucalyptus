@@ -9,26 +9,38 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-const { HOST, PORT } = process.env;
+const { HOST, PORT, SSL_KEY, SSL_CRT } = process.env;
+const config = { key: '', cert: '' };
 
-const config = {
-  key: fs.readFileSync(process.env.SSL_KEY),
-  cert: fs.readFileSync(process.env.SSL_CRT),
-};
+console.log(`${SSL_KEY}`);
+console.log(`${SSL_CRT}`);
 
-const app = express();
+try {
+  if (SSL_KEY && SSL_CRT) {
+    //file exists
+    if (fs.existsSync(SSL_KEY) && fs.existsSync(SSL_CRT)) {
+      config.key = fs.readFileSync(SSL_KEY);
+      config.cert = fs.readFileSync(SSL_CRT);
 
-middleware(app);
+      const app = express();
 
-const server = https.createServer(config, app);
+      middleware(app);
 
-server.listen(PORT, () => {
-  console.log(`App started on host: ${HOST} and port:${PORT}`);
-});
+      const server = https.createServer(config, app);
 
-http
-  .createServer((req, res) => {
-    res.writeHead(301, { Location: 'https://' + req.headers['host'] + req.url });
-    res.end();
-  })
-  .listen(80);
+      server.listen(PORT, () => {
+        console.log(`App started on host: ${HOST} and port:${PORT}`);
+      });
+
+      http
+        .createServer((req, res) => {
+          res.writeHead(301, { Location: 'https://' + req.headers['host'] + req.url });
+          res.end();
+        })
+        .listen(80);
+    }
+  }
+} catch (err) {
+  console.error(err);
+  throw err;
+}
