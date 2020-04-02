@@ -9,11 +9,13 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+console.log(`Env: ${JSON.stringify(process.env.NODE_ENV)}`);
+
 const { HOST, PORT, SSL_KEY, SSL_CRT } = process.env;
 const config = { key: '', cert: '' };
 
-console.log(`${SSL_KEY}`);
-console.log(`${SSL_CRT}`);
+console.log(`SSL_KEY: ${SSL_KEY}`);
+console.log(`SSL_CRT: ${SSL_CRT}`);
 
 try {
   if (SSL_KEY && SSL_CRT) {
