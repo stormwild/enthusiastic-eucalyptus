@@ -10,28 +10,31 @@ npm i
 # cp /home/ubuntu/.env.staging /home/ubuntu/pcci
 # cp /home/ubuntu/.env.production /home/ubuntu/pcci
 
-FILE=/home/ubuntu/.env.development
+FILE=/home/ubuntu/.env.production
 if [ -f "$FILE" ]; then
   echo "$FILE exists"
-  cp /home/ubuntu/.env.development /home/ubuntu/pcci
+  cp /home/ubuntu/.env.production /home/ubuntu/pcci
 else
-    echo "$FILE does not exist. Please set the .env.development file"
+    echo "$FILE does not exist. Please set the .env.production file"
 fi
 
 # Start the app
-NODE_ENV='test' npm run app:build
+NODE_ENV='production' npm run app:build
 
-APP_PID=$(lsof -t -i:3000)
+APP_PID=$(lsof -t -i:443)
+HTTP_PID=$(lsof -t -i:80)
 if ! [ -z "$APP_PID" ]; then
   kill -9 $APP_PID
+  kill -9 $HTTP_PID
 else
-  NODE_ENV='development' npm run app:start
+  NODE_ENV='production' npm run app:start
 fi
 
-APP_PID=$(lsof -t -i:3000)
+APP_PID=$(lsof -t -i:443)
+HTTP_PID=$(lsof -t -i:80)
 if ! [ -z "$APP_PID" ]; then
-  NODE_ENV='development' npm run build
+  NODE_ENV='production' npm run build
 else
-  NODE_ENV='development' npm run app:start
-  NODE_ENV='development' npm run build
+  NODE_ENV='production' npm run app:start
+  NODE_ENV='production' npm run build
 fi
