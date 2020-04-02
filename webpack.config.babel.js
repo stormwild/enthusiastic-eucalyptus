@@ -2,7 +2,7 @@ import { resolve as _resolve } from 'path';
 import nodeExternals from 'webpack-node-externals';
 
 const config = {
-  mode: 'development',
+  mode: process.env.NODE_ENV || 'development',
   target: 'node',
   devtool: 'source-map',
   entry: {
