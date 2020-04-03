@@ -7,7 +7,7 @@ exports.createPages = async ({ graphql, getNode, actions }) => {
   try {
     const {
       data: {
-        pcci: { instructors },
+        pcci: { courseCategories, instructors, courses },
       },
     } = await graphql(`
       query {
@@ -18,6 +18,20 @@ exports.createPages = async ({ graphql, getNode, actions }) => {
             photo
             excerpt
             bio
+          }
+          courseCategories {
+            _id
+            name
+          }
+          courses {
+            _id
+            title
+            description
+            category {
+              _id
+              name
+            }
+            fee
           }
         }
       }
@@ -62,6 +76,43 @@ exports.createPages = async ({ graphql, getNode, actions }) => {
       },
     });
 
+    // Create Course pages
+    courses.forEach(course => {
+      const slug = '/course/' + slugify(course.title);
+      course.slug = slug;
+
+      createPage({
+        path: slug,
+        component: path.resolve(`./src/templates/course.js`),
+        context: {
+          url: slug,
+          course: course,
+          frontmatter: {
+            title: course.title,
+          },
+          site: {
+            siteMetadata: siteNode.siteMetadata,
+          },
+        },
+      });
+    });
+
+    // Create Courses Page which lists courses
+    createPage({
+      path: '/courses/',
+      component: path.resolve(`./src/templates/courses.js`),
+      context: {
+        url: '/courses/',
+        courses: courses,
+        frontmatter: {
+          title: 'Courses',
+        },
+        site: {
+          siteMetadata: siteNode.siteMetadata,
+        },
+      },
+    });
+
     // Create App Page
     createPage({
       path: '/app/',
@@ -76,6 +127,8 @@ exports.createPages = async ({ graphql, getNode, actions }) => {
         },
       },
     });
+
+    // createPage({});
   } catch (err) {
     console.log(err);
   }

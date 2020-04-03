@@ -247,7 +247,8 @@ var instructorSchema = (0, _mongoose.Schema)({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    index: true
   },
   photo: String,
   excerpt: String,
