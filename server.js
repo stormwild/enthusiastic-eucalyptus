@@ -678,7 +678,8 @@ var middleware = function middleware(app) {
   app.use('/app/:path', function (err, req, res, next) {
     res.status(200).sendFile(_path["default"].resolve('public/', 'app/index.html'));
   });
-  app.use(function (_req, res, _next) {
+  app.use(function (req, res, _next) {
+    console.log('req' + req.path);
     res.status(404).sendFile(_path["default"].resolve('public/', '404/index.html'));
   });
   app.use(function (err, _req, res, _next) {

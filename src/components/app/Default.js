@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { Link, safePrefix, htmlToReact } from '../../utils';
+import { Link } from '@reach/router';
+import { safePrefix, htmlToReact } from '../../utils';
 
 const Default = props => {
   return (
@@ -26,6 +27,11 @@ const Default = props => {
             </div>
           )}
           <div className="post-content">{htmlToReact(_.get(props, 'pageContext.html'))}</div>
+          <div className="post-content">
+            <Link to="login" className="button secondary">
+              Login
+            </Link>
+          </div>
         </article>
       </div>
     </div>

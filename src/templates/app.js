@@ -2,7 +2,6 @@ import React from 'react';
 import { Router } from '@reach/router';
 import { Layout } from '../components/index';
 import { Default, Login } from '../components/app';
-import { Link, safePrefix } from '../utils';
 
 const App = props => {
   return (

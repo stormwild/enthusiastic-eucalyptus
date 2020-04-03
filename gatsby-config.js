@@ -55,5 +55,9 @@ module.exports = {
       },
     },
     'gatsby-plugin-pcci',
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/app/*`] },
+    },
   ],
 };

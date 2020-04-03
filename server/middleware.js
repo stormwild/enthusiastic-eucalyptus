@@ -40,7 +40,8 @@ const middleware = app => {
     res.status(200).sendFile(path.resolve('public/', 'app/index.html'));
   });
 
-  app.use((_req, res, _next) => {
+  app.use((req, res, _next) => {
+    console.log('req' + req.path);
     res.status(404).sendFile(path.resolve('public/', '404/index.html'));
   });
 
