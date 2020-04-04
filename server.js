@@ -86,6 +86,46 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./server/auth.js":
+/*!************************!*\
+  !*** ./server/auth.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _passport = _interopRequireDefault(__webpack_require__(/*! passport */ "passport"));
+
+var _local = _interopRequireDefault(__webpack_require__(/*! ./strategies/local */ "./server/strategies/local.js"));
+
+var auth = function auth(app) {
+  app.use(_passport["default"].initialize());
+  app.use(_passport["default"].session());
+
+  _passport["default"].serializeUser(function (user, done) {
+    // null, user.id
+    done(null, user);
+  });
+
+  _passport["default"].deserializeUser(function (user, done) {
+    done(null, user);
+  });
+
+  (0, _local["default"])(_passport["default"]);
+};
+
+var _default = auth;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./server/db/data/course-categories.json":
 /*!***********************************************!*\
   !*** ./server/db/data/course-categories.json ***!
@@ -643,6 +683,12 @@ var _path = _interopRequireDefault(__webpack_require__(/*! path */ "path"));
 
 var _express = _interopRequireDefault(__webpack_require__(/*! express */ "express"));
 
+var _bodyParser = _interopRequireDefault(__webpack_require__(/*! body-parser */ "body-parser"));
+
+var _cookieParser = _interopRequireDefault(__webpack_require__(/*! cookie-parser */ "cookie-parser"));
+
+var _expressSession = _interopRequireDefault(__webpack_require__(/*! express-session */ "express-session"));
+
 var _cors = _interopRequireDefault(__webpack_require__(/*! cors */ "cors"));
 
 var _compression = _interopRequireDefault(__webpack_require__(/*! compression */ "compression"));
@@ -651,7 +697,18 @@ var _helmet = _interopRequireDefault(__webpack_require__(/*! helmet */ "helmet")
 
 var _apollo = _interopRequireDefault(__webpack_require__(/*! ./graphql/apollo */ "./server/graphql/apollo.js"));
 
+var _auth = _interopRequireDefault(__webpack_require__(/*! ./auth */ "./server/auth.js"));
+
 var middleware = function middleware(app) {
+  app.use(_bodyParser["default"].json());
+  app.use(_bodyParser["default"].urlencoded({
+    extended: false
+  }));
+  app.use((0, _cookieParser["default"])());
+  app.use((0, _expressSession["default"])({
+    secret: 'terrible secret'
+  }));
+  (0, _auth["default"])(app);
   app.use((0, _cors["default"])());
   app.use((0, _compression["default"])());
   app.use((0, _helmet["default"])());
@@ -677,6 +734,16 @@ var middleware = function middleware(app) {
 
   app.use('/app/:path', function (err, req, res, next) {
     res.status(200).sendFile(_path["default"].resolve('public/', 'app/index.html'));
+  }); // POST method route
+
+  app.post('/app/login', function (req, res) {
+    // res.send(JSON.stringify(req.body));
+    req.login(req.body, function () {
+      res.redirect('/result');
+    });
+  });
+  app.get('/result', function (req, res) {
+    res.json(req.user);
   });
   app.use(function (req, res, _next) {
     console.log('req' + req.path);
@@ -719,6 +786,41 @@ var app = (0, _express["default"])();
 app.listen(3000, function () {
   console.log('App started on port 3000');
 });
+
+/***/ }),
+
+/***/ "./server/strategies/local.js":
+/*!************************************!*\
+  !*** ./server/strategies/local.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _passportLocal = __webpack_require__(/*! passport-local */ "passport-local");
+
+var localStrategy = function localStrategy(passport) {
+  // Creates a user based on the posted form
+  passport.use(new _passportLocal.Strategy({
+    usernameField: 'username',
+    passwordField: 'password'
+  }, function (username, password, done) {
+    // just create a user
+    var user = {
+      username: username,
+      password: password
+    };
+    done(null, user);
+  }));
+};
+
+var _default = localStrategy;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -777,6 +879,17 @@ module.exports = require("apollo-server-express");
 
 /***/ }),
 
+/***/ "body-parser":
+/*!******************************!*\
+  !*** external "body-parser" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("body-parser");
+
+/***/ }),
+
 /***/ "compression":
 /*!******************************!*\
   !*** external "compression" ***!
@@ -785,6 +898,17 @@ module.exports = require("apollo-server-express");
 /***/ (function(module, exports) {
 
 module.exports = require("compression");
+
+/***/ }),
+
+/***/ "cookie-parser":
+/*!********************************!*\
+  !*** external "cookie-parser" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("cookie-parser");
 
 /***/ }),
 
@@ -807,6 +931,17 @@ module.exports = require("cors");
 /***/ (function(module, exports) {
 
 module.exports = require("express");
+
+/***/ }),
+
+/***/ "express-session":
+/*!**********************************!*\
+  !*** external "express-session" ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("express-session");
 
 /***/ }),
 
@@ -862,6 +997,28 @@ module.exports = require("mongodb");
 /***/ (function(module, exports) {
 
 module.exports = require("mongoose");
+
+/***/ }),
+
+/***/ "passport":
+/*!***************************!*\
+  !*** external "passport" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("passport");
+
+/***/ }),
+
+/***/ "passport-local":
+/*!*********************************!*\
+  !*** external "passport-local" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("passport-local");
 
 /***/ }),
 

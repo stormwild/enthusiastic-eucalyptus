@@ -1,11 +1,24 @@
 import path from 'path';
 import express from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+
 import cors from 'cors';
 import compress from 'compression';
 import helmet from 'helmet';
+
 import server from './graphql/apollo';
+import auth from './auth';
 
 const middleware = app => {
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(session({ secret: 'terrible secret' }));
+
+  auth(app);
+
   app.use(cors());
 
   app.use(compress());
@@ -38,6 +51,18 @@ const middleware = app => {
 
   app.use('/app/:path', (err, req, res, next) => {
     res.status(200).sendFile(path.resolve('public/', 'app/index.html'));
+  });
+
+  // POST method route
+  app.post('/app/login', (req, res) => {
+    // res.send(JSON.stringify(req.body));
+    req.login(req.body, () => {
+      res.redirect('/result');
+    });
+  });
+
+  app.get('/result', (req, res) => {
+    res.json(req.user);
   });
 
   app.use((req, res, _next) => {
