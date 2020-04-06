@@ -144,6 +144,36 @@ exports.createPages = async ({ graphql, getNode, actions }) => {
       },
     });
 
+    // Login
+    createPage({
+      path: '/login/',
+      component: path.resolve(`./src/templates/login.js`),
+      context: {
+        url: '/login/',
+        frontmatter: {
+          title: 'Login',
+        },
+        site: {
+          siteMetadata: siteNode.siteMetadata,
+        },
+      },
+    });
+
+    // SignUp
+    createPage({
+      path: '/register/',
+      component: path.resolve(`./src/templates/register.js`),
+      context: {
+        url: '/register/',
+        frontmatter: {
+          title: 'Register',
+        },
+        site: {
+          siteMetadata: siteNode.siteMetadata,
+        },
+      },
+    });
+
     // createPage({});
   } catch (err) {
     console.log(err);

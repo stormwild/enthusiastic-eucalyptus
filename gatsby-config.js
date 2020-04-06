@@ -9,6 +9,7 @@ module.exports = {
   pathPrefix: '/',
   siteMetadata: require('./site-metadata.json'),
   plugins: [
+    `gatsby-plugin-sass`,
     `gatsby-plugin-react-helmet`,
     `gatsby-source-data`,
     {

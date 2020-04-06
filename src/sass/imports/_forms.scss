@@ -1,0 +1,10 @@
+form {
+  .form-row {
+    margin: 0 0 1.66667em;
+
+    .form-errors {
+      color: _palette(error-red);
+      font-size: calc(1rem - 4px);
+    }
+  }
+}

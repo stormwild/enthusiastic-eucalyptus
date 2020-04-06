@@ -1,9 +1,7 @@
-import Login from './app/Login';
 import Default from './app/Default';
 
-export { Default, Login };
+export { Default };
 
 export default {
   Default,
-  Login,
 };

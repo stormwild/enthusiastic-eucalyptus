@@ -23,7 +23,7 @@ sections:
     bg: gray
     actions:
       - label: Free Trial
-        url: /signup
+        url: /register
       - label: View Demo
         url: '#'
   - type: section_cta

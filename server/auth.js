@@ -1,7 +1,7 @@
 import passport from 'passport';
 import localStrategy from './strategies/local';
 
-const auth = app => {
+const auth = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());
 

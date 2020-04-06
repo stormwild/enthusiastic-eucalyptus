@@ -68,7 +68,7 @@ sections:
     subtitle: This is an optional description for the call to action block.
     actions:
       - label: Get Started
-        url: /signup
+        url: /register
   - type: section_posts
     section_id: recent-posts
     title: Latest Posts

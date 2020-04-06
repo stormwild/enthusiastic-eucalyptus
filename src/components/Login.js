@@ -1,9 +1,24 @@
 import React from 'react';
 import _ from 'lodash';
+import { useFormik } from 'formik';
 import { Link } from '@reach/router';
-import { safePrefix, htmlToReact } from '../../utils';
+import { safePrefix, htmlToReact } from '../utils';
+import * as Yup from 'yup';
 
 const Login = props => {
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required('Username is required'),
+      password: Yup.string().required('Required'),
+    }),
+    onSubmit: values => {
+      // alert(JSON.stringify(values, null, 2));
+    },
+  });
   return (
     <div className="outer">
       <div className="inner-medium">
@@ -28,31 +43,53 @@ const Login = props => {
           )}
           <div className="post-content">{htmlToReact(_.get(props, 'pageContext.html'))}</div>
           <div className="post-content">
-            <form name="loginForm" method="POST" id="login-form" className="login-form">
+            <form
+              name="loginForm"
+              method="POST"
+              id="login-form"
+              className="login-form"
+              action="/login"
+            >
               <p className="screen-reader-text">
                 <label>
                   Don't fill this out if you're human: <input name="bot-field" />
                 </label>
               </p>
-              <p className="form-row">
+              <div className="form-row">
                 <label className="form-label">Username</label>
-                <input type="text" name="name" className="form-input" />
-              </p>
-              {/* <p className="form-row">
-                <label className="form-label">Email address</label>
-                <input type="email" name="email" className="form-input" />
-              </p> */}
-              <p className="form-row">
+                <input
+                  type="text"
+                  name="username"
+                  className="form-input"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.username}
+                />
+                {formik.touched.username && formik.errors.username ? (
+                  <div className="form-errors">{formik.errors.username}</div>
+                ) : null}
+              </div>
+              <div className="form-row">
                 <label className="form-label">Password</label>
-                <input type="password" name="password" className="form-input" />
-              </p>
+                <input
+                  type="password"
+                  name="password"
+                  className="form-input"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                />
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="form-errors">{formik.errors.password}</div>
+                ) : null}
+              </div>
 
               <input type="hidden" name="form-name" value="loginForm" />
-              <p className="form-row form-submit">
+              <div className="form-row form-submit">
                 <button type="submit" className="button">
                   Login
                 </button>
-              </p>
+              </div>
             </form>
           </div>
         </article>

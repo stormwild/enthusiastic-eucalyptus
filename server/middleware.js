@@ -8,14 +8,26 @@ import cors from 'cors';
 import compress from 'compression';
 import helmet from 'helmet';
 
+import passport from 'passport';
+
 import server from './graphql/apollo';
 import auth from './auth';
+import { User, Role } from './db/models';
 
-const middleware = app => {
+const middleware = (app) => {
+  const { SESSION_SECRET = 'For the gentle wind does move Silently invisibly' } = process.env;
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(session({ secret: 'terrible secret' }));
+  app.use(
+    session({
+      secret: SESSION_SECRET,
+      resave: false,
+      saveUninitialized: true,
+      cookie: { secure: true },
+    })
+  );
 
   auth(app);
 
@@ -47,22 +59,33 @@ const middleware = app => {
   // serve static files before gatsbyExpress
   app.use(express.static('public/'));
 
+  // Apollo
   server.applyMiddleware({ app, path: '/graphql' });
 
   app.use('/app/:path', (err, req, res, next) => {
     res.status(200).sendFile(path.resolve('public/', 'app/index.html'));
   });
 
-  // POST method route
-  app.post('/app/login', (req, res) => {
-    // res.send(JSON.stringify(req.body));
-    req.login(req.body, () => {
-      res.redirect('/result');
-    });
+  // Login
+  app.post('/login', passport.authenticate('local'), (_req, res) => {
+    res.redirect('/app');
   });
 
-  app.get('/result', (req, res) => {
-    res.json(req.user);
+  app.post('/register', (req, res) => {
+    const { username, email, password } = req.body;
+    const role = Role.collection.findOne({ name: 'Guest' }, (err, role) => {
+      if (err) throw err;
+
+      User.register({ username, email, role: role._id }, password, (err, user) => {
+        if (err) {
+          throw err;
+        }
+
+        passport.authenticate('local')(req, res, () => {
+          res.redirect(302, '/app');
+        });
+      });
+    });
   });
 
   app.use((req, res, _next) => {

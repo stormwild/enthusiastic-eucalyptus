@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-express';
-import { configProvider } from './configProvider';
+import configProvider from './configProvider';
 
 const config = configProvider();
 const server = new ApolloServer(config);

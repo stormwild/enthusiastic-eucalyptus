@@ -1,12 +1,12 @@
 ---
-title: Sign Up
+title: Sample
 subtitle: >-
   This is an optional subtitle. It can be used to describe what this page is
   about.
 img_path: images/11.jpg
 menus:
   secondary:
-    title: Sign Up
+    title: Sample
     weight: 1
 template: page
 ---

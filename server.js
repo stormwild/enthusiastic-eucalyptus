@@ -159,6 +159,17 @@ module.exports = JSON.parse("[{\"name\":\"Mariano \\\"Jun\\\" Miranda\",\"photo\
 
 /***/ }),
 
+/***/ "./server/db/data/roles.json":
+/*!***********************************!*\
+  !*** ./server/db/data/roles.json ***!
+  \***********************************/
+/*! exports provided: 0, 1, 2, 3, 4, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("[{\"name\":\"Admin\"},{\"name\":\"Staff\"},{\"name\":\"Faculty\"},{\"name\":\"Student\"},{\"name\":\"Guest\"}]");
+
+/***/ }),
+
 /***/ "./server/db/models/course-category.js":
 /*!*********************************************!*\
   !*** ./server/db/models/course-category.js ***!
@@ -262,6 +273,14 @@ var _course = _interopRequireDefault(__webpack_require__(/*! ./course */ "./serv
 
 exports.Course = _course["default"];
 
+var _role = _interopRequireDefault(__webpack_require__(/*! ./role */ "./server/db/models/role.js"));
+
+exports.Role = _role["default"];
+
+var _user = _interopRequireDefault(__webpack_require__(/*! ./user */ "./server/db/models/user.js"));
+
+exports.User = _user["default"];
+
 /***/ }),
 
 /***/ "./server/db/models/instructor.js":
@@ -307,6 +326,99 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./server/db/models/role.js":
+/*!**********************************!*\
+  !*** ./server/db/models/role.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
+
+exports.__esModule = true;
+exports["default"] = exports.roleSchema = void 0;
+
+var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
+
+var roleSchema = (0, _mongoose.Schema)({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  }
+});
+exports.roleSchema = roleSchema;
+
+var Role = _mongoose["default"].model('Role', roleSchema, 'Roles');
+
+var _default = Role;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/db/models/user.js":
+/*!**********************************!*\
+  !*** ./server/db/models/user.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
+
+exports.__esModule = true;
+exports["default"] = exports.userSchema = void 0;
+
+var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
+
+var _passportLocalMongoose = _interopRequireDefault(__webpack_require__(/*! passport-local-mongoose */ "passport-local-mongoose"));
+
+var ObjectId = _mongoose.Schema.Types.ObjectId;
+var userSchema = (0, _mongoose.Schema)({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+  role: {
+    type: ObjectId,
+    ref: 'Role',
+    required: true
+  },
+  active: {
+    type: Boolean,
+    "default": true
+  }
+});
+exports.userSchema = userSchema;
+userSchema.plugin(_passportLocalMongoose["default"]);
+
+var User = _mongoose["default"].model('User', userSchema, 'Users');
+
+var _default = User;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./server/db/mongodb.js":
 /*!******************************!*\
   !*** ./server/db/mongodb.js ***!
@@ -319,9 +431,7 @@ exports["default"] = _default;
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
-var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
-
-var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
+var _mongoose = _interopRequireDefault(__webpack_require__(/*! mongoose */ "mongoose"));
 
 var _readline = _interopRequireDefault(__webpack_require__(/*! readline */ "readline"));
 
@@ -384,6 +494,7 @@ _mongoose["default"].connection.once('open', function () {
   (0, _seeder.initCourseCategories)();
   (0, _seeder.initInstructors)();
   (0, _seeder.initCourses)();
+  (0, _seeder.initRoles)();
 });
 
 /***/ }),
@@ -401,7 +512,7 @@ _mongoose["default"].connection.once('open', function () {
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports["default"] = exports.initCourses = exports.initInstructors = exports.initCourseCategories = void 0;
+exports["default"] = exports.initRoles = exports.initCourses = exports.initInstructors = exports.initCourseCategories = void 0;
 
 var _models = __webpack_require__(/*! ../models */ "./server/db/models/index.js");
 
@@ -410,6 +521,8 @@ var _courseCategories = _interopRequireDefault(__webpack_require__(/*! ../data/c
 var _instructors = _interopRequireDefault(__webpack_require__(/*! ../data/instructors.json */ "./server/db/data/instructors.json"));
 
 var _courses = _interopRequireDefault(__webpack_require__(/*! ../data/courses.json */ "./server/db/data/courses.json"));
+
+var _roles = _interopRequireDefault(__webpack_require__(/*! ../data/roles.json */ "./server/db/data/roles.json"));
 
 var initCourseCategories = function initCourseCategories() {
   _models.CourseCategory.countDocuments(function (err, count) {
@@ -460,10 +573,23 @@ var initCourses = function initCourses() {
 };
 
 exports.initCourses = initCourses;
+
+var initRoles = function initRoles() {
+  _models.Role.countDocuments(function (err, count) {
+    if (count == 0) {
+      _models.Role.collection.insertMany(_roles["default"], function (err, docs) {
+        console.log("Roles seeded. Inserted: ".concat(docs.insertedCount));
+      });
+    }
+  });
+};
+
+exports.initRoles = initRoles;
 var _default = {
   initInstructors: initInstructors,
   initCourseCategories: initCourseCategories,
-  initCourses: initCourses
+  initCourses: initCourses,
+  initRoles: initRoles
 };
 exports["default"] = _default;
 
@@ -479,14 +605,16 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
 exports.__esModule = true;
 exports["default"] = void 0;
 
 var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
 
-var _configProvider = __webpack_require__(/*! ./configProvider */ "./server/graphql/configProvider.js");
+var _configProvider = _interopRequireDefault(__webpack_require__(/*! ./configProvider */ "./server/graphql/configProvider.js"));
 
-var config = (0, _configProvider.configProvider)();
+var config = (0, _configProvider["default"])();
 var server = new _apolloServerExpress.ApolloServer(config);
 var _default = server;
 exports["default"] = _default;
@@ -506,21 +634,50 @@ exports["default"] = _default;
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.configProvider = void 0;
+exports["default"] = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
+var _index = _interopRequireDefault(__webpack_require__(/*! ./schema/index */ "./server/graphql/schema/index.js"));
 
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"));
+var _index2 = _interopRequireDefault(__webpack_require__(/*! ./resolvers/index */ "./server/graphql/resolvers/index.js"));
+
+var config = {
+  typeDefs: _index["default"],
+  resolvers: _index2["default"],
+  formatError: function formatError(error) {
+    console.log(JSON.stringify(error));
+    return error;
+  }
+};
+
+var configProvider = function configProvider() {
+  return config;
+};
+
+var _default = configProvider;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/graphQLDate.js":
+/*!*************************************************!*\
+  !*** ./server/graphql/resolvers/graphQLDate.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
 
 var _graphql = __webpack_require__(/*! graphql */ "graphql");
 
 var _language = _interopRequireDefault(__webpack_require__(/*! graphql/language */ "graphql/language"));
 
-var _schema = _interopRequireDefault(__webpack_require__(/*! ./schema/schema.gql */ "./server/graphql/schema/schema.gql"));
-
-var _mongoose = _interopRequireDefault(__webpack_require__(/*! mongoose */ "mongoose"));
-
-var GraphQLDate = new _graphql.GraphQLScalarType({
+var graphQLDate = new _graphql.GraphQLScalarType({
   name: 'GraphQLDate',
   description: 'A Date() type in GraphQL as a scalar',
   serialize: function serialize(value) {
@@ -537,6 +694,56 @@ var GraphQLDate = new _graphql.GraphQLScalarType({
     }
   }
 });
+var _default = graphQLDate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/index.js":
+/*!*******************************************!*\
+  !*** ./server/graphql/resolvers/index.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(/*! ./queries/index */ "./server/graphql/resolvers/queries/index.js"));
+
+var _index2 = _interopRequireDefault(__webpack_require__(/*! ./mutations/index */ "./server/graphql/resolvers/mutations/index.js"));
+
+var _graphQLDate = _interopRequireDefault(__webpack_require__(/*! ./graphQLDate */ "./server/graphql/resolvers/graphQLDate.js"));
+
+var resolvers = {
+  Query: _index["default"],
+  Mutation: _index2["default"],
+  GraphQLDate: _graphQLDate["default"]
+};
+var _default = resolvers;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/mutations/index.js":
+/*!*****************************************************!*\
+  !*** ./server/graphql/resolvers/mutations/index.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _rootValueHolder = __webpack_require__(/*! ../rootValueHolder */ "./server/graphql/resolvers/rootValueHolder.js");
 
 var addInstructor = function addInstructor(_, _ref) {
   var instructor = _ref.instructor;
@@ -544,123 +751,440 @@ var addInstructor = function addInstructor(_, _ref) {
   return instructor;
 };
 
-var resolvers = {
-  Query: {
-    courseCategories: function () {
-      var _courseCategories = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, args, context, info) {
-        var CourseCategories;
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                CourseCategories = _mongoose["default"].model('CourseCategory');
-                _context.next = 3;
-                return CourseCategories.find();
-
-              case 3:
-                return _context.abrupt("return", _context.sent);
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function courseCategories(_x, _x2, _x3, _x4) {
-        return _courseCategories.apply(this, arguments);
-      }
-
-      return courseCategories;
-    }(),
-    instructors: function () {
-      var _instructors = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(parent, args, context, info) {
-        var Instructor;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                Instructor = _mongoose["default"].model('Instructor');
-                _context2.next = 3;
-                return Instructor.find();
-
-              case 3:
-                return _context2.abrupt("return", _context2.sent);
-
-              case 4:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function instructors(_x5, _x6, _x7, _x8) {
-        return _instructors.apply(this, arguments);
-      }
-
-      return instructors;
-    }(),
-    courses: function () {
-      var _courses = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(parent, args, context, info) {
-        var Course;
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                Course = _mongoose["default"].model('Course');
-                _context3.next = 3;
-                return Course.find().populate('category');
-
-              case 3:
-                return _context3.abrupt("return", _context3.sent);
-
-              case 4:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }));
-
-      function courses(_x9, _x10, _x11, _x12) {
-        return _courses.apply(this, arguments);
-      }
-
-      return courses;
-    }()
-  },
-  Mutation: {
-    addInstructor: addInstructor
-  },
-  GraphQLDate: GraphQLDate
-};
-var config = {
-  typeDefs: _schema["default"],
-  resolvers: resolvers,
-  formatError: function formatError(error) {
-    console.log(JSON.stringify(error));
-    return error;
+var mutations = {
+  addInstructor: addInstructor,
+  addRoot: function addRoot(_, _ref2) {
+    var value = _ref2.value;
+    return (0, _rootValueHolder.setRootValueHolder)(value);
   }
 };
-
-var configProvider = function configProvider() {
-  return config;
-};
-
-exports.configProvider = configProvider;
+var _default = mutations;
+exports["default"] = _default;
 
 /***/ }),
 
-/***/ "./server/graphql/schema/schema.gql":
-/*!******************************************!*\
-  !*** ./server/graphql/schema/schema.gql ***!
-  \******************************************/
+/***/ "./server/graphql/resolvers/queries/index.js":
+/*!***************************************************!*\
+  !*** ./server/graphql/resolvers/queries/index.js ***!
+  \***************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "scalar GraphQLDate\n\ninput UserInput {\n  username: String\n  password: String\n  email: String\n}\n\ninput InstructorInput {\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [ID!]!\n}\n\ninput CourseCategoryInput {\n  name: String!\n}\n\ninput CourseInput {\n  title: String!\n  description: String!\n  instructors: [ID!]!\n  fee: Float\n  category: CourseCategoryInput\n}\n\ntype Role {\n  _id: ID!\n  name: String!\n}\n\ntype User {\n  _id: ID!\n  username: String!\n  password: String!\n  email: String!\n  roles: [Role!]!\n}\n\ntype CourseCategory {\n  _id: ID!\n  name: String!\n}\n\ntype Instructor {\n  _id: ID!\n  name: String!\n  photo: String\n  excerpt: String\n  bio: String\n  courses: [Course!]!\n}\n\ntype Course {\n  _id: ID!\n  title: String!\n  description: String!\n  instructors: [Instructor!]!\n  fee: Float\n  category: CourseCategory!\n}\n\ninput ScheduleInput {\n  _id: ID\n  course: CourseInput!\n  dates: [GraphQLDate!]!\n}\n\ntype Schedule {\n  _id: ID!\n  course: Course!\n  dates: [GraphQLDate!]!\n}\n\ntype Student {\n  _id: ID!\n  name: String!\n}\n\ntype Query {\n  courseCategories: [CourseCategory]\n  instructors: [Instructor]\n  courses: [Course]\n  schedules: [Schedule]\n  users: [User]\n  roles: [Role]\n  courseCategory(id: ID!): CourseCategory\n}\n\ntype Mutation {\n  addCourseCategory(name: String!): CourseCategory!\n  updateCoureCategory(_id: ID!, name: String!): CourseCategory!\n  addInstructor(instructor: InstructorInput!): Instructor!\n  updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!\n  addCourse(course: CourseInput!): Course!\n  updateCourse(_id: ID!, course: CourseInput!): Course!\n  addRole(name: String): Role!\n  updateRole(_id: ID!, name: String): Role\n  addUser(user: UserInput!): User!\n  updateUser(_id: ID!, user: UserInput!): User!\n  addSchedule(schedule: ScheduleInput!): Schedule\n  updateSchedule(_id: ID!, schedule: ScheduleInput!): Schedule\n}\n"
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"));
+
+var _index = __webpack_require__(/*! ../../../db/models/index */ "./server/db/models/index.js");
+
+var _rootValueHolder = __webpack_require__(/*! ../rootValueHolder */ "./server/graphql/resolvers/rootValueHolder.js");
+
+var queries = {
+  root: function root() {
+    return (0, _rootValueHolder.getRootValueHolder)();
+  },
+  courseCategories: function () {
+    var _courseCategories = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, args, context, info) {
+      return _regenerator["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _index.CourseCategories.find();
+
+            case 2:
+              return _context.abrupt("return", _context.sent);
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function courseCategories(_x, _x2, _x3, _x4) {
+      return _courseCategories.apply(this, arguments);
+    }
+
+    return courseCategories;
+  }(),
+  instructors: function () {
+    var _instructors = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(parent, args, context, info) {
+      return _regenerator["default"].wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return _index.Instructor.find();
+
+            case 2:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    function instructors(_x5, _x6, _x7, _x8) {
+      return _instructors.apply(this, arguments);
+    }
+
+    return instructors;
+  }(),
+  courses: function () {
+    var _courses = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(parent, args, context, info) {
+      return _regenerator["default"].wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return _index.Course.find().populate('category');
+
+            case 2:
+              return _context3.abrupt("return", _context3.sent);
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    function courses(_x9, _x10, _x11, _x12) {
+      return _courses.apply(this, arguments);
+    }
+
+    return courses;
+  }()
+};
+var _default = queries;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/rootValueHolder.js":
+/*!*****************************************************!*\
+  !*** ./server/graphql/resolvers/rootValueHolder.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports["default"] = exports.getRootValueHolder = exports.setRootValueHolder = void 0;
+var rootValueHolder = "Hello";
+
+var setRootValueHolder = function setRootValueHolder(value) {
+  rootValueHolder = value;
+  return rootValueHolder;
+};
+
+exports.setRootValueHolder = setRootValueHolder;
+
+var getRootValueHolder = function getRootValueHolder() {
+  return rootValueHolder;
+};
+
+exports.getRootValueHolder = getRootValueHolder;
+var _default = {
+  setRootValueHolder: setRootValueHolder,
+  getRootValueHolder: getRootValueHolder
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/course.js":
+/*!*****************************************!*\
+  !*** ./server/graphql/schema/course.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  input CourseInput {\n    title: String!\n    description: String!\n    instructors: [ID!]!\n    fee: Float\n    category: ID\n  }\n\n  type Course {\n    _id: ID!\n    title: String!\n    description: String!\n    instructors: [Instructor!]!\n    fee: Float\n    category: CourseCategory!\n  }\n\n  extend type Query {\n    courses: [Course]\n  }\n\n  extend type Mutation {\n    addCourse(course: CourseInput!): Course!\n    updateCourse(_id: ID!, course: CourseInput!): Course!\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var course = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = course;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/courseCategory.js":
+/*!*************************************************!*\
+  !*** ./server/graphql/schema/courseCategory.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  type CourseCategory {\n    _id: ID!\n    name: String!\n  }\n\n  extend type Query {\n    courseCategories: [CourseCategory]\n    courseCategory(id: ID!): CourseCategory\n  }\n\n  extend type Mutation {\n    addCourseCategory(name: String!): CourseCategory!\n    updateCoureCategory(_id: ID!, name: String!): CourseCategory!\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var courseCategory = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = courseCategory;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/graphQLDate.js":
+/*!**********************************************!*\
+  !*** ./server/graphql/schema/graphQLDate.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  scalar GraphQLDate\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var graphQLDate = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = graphQLDate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/index.js":
+/*!****************************************!*\
+  !*** ./server/graphql/schema/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _course = _interopRequireDefault(__webpack_require__(/*! ./course */ "./server/graphql/schema/course.js"));
+
+var _courseCategory = _interopRequireDefault(__webpack_require__(/*! ./courseCategory */ "./server/graphql/schema/courseCategory.js"));
+
+var _instructor = _interopRequireDefault(__webpack_require__(/*! ./instructor */ "./server/graphql/schema/instructor.js"));
+
+var _role = _interopRequireDefault(__webpack_require__(/*! ./role */ "./server/graphql/schema/role.js"));
+
+var _root = _interopRequireDefault(__webpack_require__(/*! ./root */ "./server/graphql/schema/root.js"));
+
+var _user = _interopRequireDefault(__webpack_require__(/*! ./user */ "./server/graphql/schema/user.js"));
+
+var _graphQLDate = _interopRequireDefault(__webpack_require__(/*! ./graphQLDate */ "./server/graphql/schema/graphQLDate.js"));
+
+var typeDefsArray = [_root["default"], _role["default"], _courseCategory["default"], _instructor["default"], _user["default"], _course["default"], _graphQLDate["default"]];
+var _default = typeDefsArray;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/instructor.js":
+/*!*********************************************!*\
+  !*** ./server/graphql/schema/instructor.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  input InstructorInput {\n    name: String!\n    photo: String\n    excerpt: String\n    bio: String\n    courses: [ID!]!\n  }\n\n  type Instructor {\n    _id: ID!\n    name: String!\n    photo: String\n    excerpt: String\n    bio: String\n    courses: [Course!]!\n  }\n\n  extend type Query {\n    instructors: [Instructor]\n  }\n\n  extend type Mutation {\n    addInstructor(instructor: InstructorInput!): Instructor!\n    updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var instructor = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = instructor;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/role.js":
+/*!***************************************!*\
+  !*** ./server/graphql/schema/role.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  type Role {\n    _id: ID!\n    name: String!\n  }\n\n  extend type Query {\n    roles: [Role]\n  }\n\n  extend type Mutation {\n    addRole(name: String): Role!\n    updateRole(_id: ID!, name: String): Role\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var role = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = role;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/root.js":
+/*!***************************************!*\
+  !*** ./server/graphql/schema/root.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  type Query {\n    root: String\n  }\n\n  type Mutation {\n    addRoot(value: String!): String\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var root = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = root;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/schema/user.js":
+/*!***************************************!*\
+  !*** ./server/graphql/schema/user.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  input UserInput {\n    username: String\n    password: String\n    email: String\n  }\n\n  type User {\n    _id: ID!\n    username: String!\n    password: String!\n    email: String!\n    roles: [Role!]!\n  }\n\n  extend type Query {\n    users: [User]\n  }\n\n  extend type Mutation {\n    addUser(user: UserInput!): User!\n    updateUser(_id: ID!, user: UserInput!): User!\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var user = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = user;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -695,18 +1219,29 @@ var _compression = _interopRequireDefault(__webpack_require__(/*! compression */
 
 var _helmet = _interopRequireDefault(__webpack_require__(/*! helmet */ "helmet"));
 
+var _passport = _interopRequireDefault(__webpack_require__(/*! passport */ "passport"));
+
 var _apollo = _interopRequireDefault(__webpack_require__(/*! ./graphql/apollo */ "./server/graphql/apollo.js"));
 
 var _auth = _interopRequireDefault(__webpack_require__(/*! ./auth */ "./server/auth.js"));
 
+var _models = __webpack_require__(/*! ./db/models */ "./server/db/models/index.js");
+
 var middleware = function middleware(app) {
+  var _process$env$SESSION_ = process.env.SESSION_SECRET,
+      SESSION_SECRET = _process$env$SESSION_ === void 0 ? 'For the gentle wind does move Silently invisibly' : _process$env$SESSION_;
   app.use(_bodyParser["default"].json());
   app.use(_bodyParser["default"].urlencoded({
     extended: false
   }));
   app.use((0, _cookieParser["default"])());
   app.use((0, _expressSession["default"])({
-    secret: 'terrible secret'
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: true
+    }
   }));
   (0, _auth["default"])(app);
   app.use((0, _cors["default"])());
@@ -725,7 +1260,7 @@ var middleware = function middleware(app) {
     policy: 'same-origin'
   })); // serve static files before gatsbyExpress
 
-  app.use(_express["default"]["static"]('public/'));
+  app.use(_express["default"]["static"]('public/')); // Apollo
 
   _apollo["default"].applyMiddleware({
     app: app,
@@ -734,16 +1269,36 @@ var middleware = function middleware(app) {
 
   app.use('/app/:path', function (err, req, res, next) {
     res.status(200).sendFile(_path["default"].resolve('public/', 'app/index.html'));
-  }); // POST method route
+  }); // Login
 
-  app.post('/app/login', function (req, res) {
-    // res.send(JSON.stringify(req.body));
-    req.login(req.body, function () {
-      res.redirect('/result');
-    });
+  app.post('/login', _passport["default"].authenticate('local'), function (_req, res) {
+    res.redirect('/app');
   });
-  app.get('/result', function (req, res) {
-    res.json(req.user);
+  app.post('/register', function (req, res) {
+    var _req$body = req.body,
+        username = _req$body.username,
+        email = _req$body.email,
+        password = _req$body.password;
+
+    var role = _models.Role.collection.findOne({
+      name: 'Guest'
+    }, function (err, role) {
+      if (err) throw err;
+
+      _models.User.register({
+        username: username,
+        email: email,
+        role: role._id
+      }, password, function (err, user) {
+        if (err) {
+          throw err;
+        }
+
+        _passport["default"].authenticate('local')(req, res, function () {
+          res.redirect(302, '/app');
+        });
+      });
+    });
   });
   app.use(function (req, res, _next) {
     console.log('req' + req.path);
@@ -778,9 +1333,6 @@ var _middleware = _interopRequireDefault(__webpack_require__(/*! ./middleware */
 
 __webpack_require__(/*! ./db/mongodb */ "./server/db/mongodb.js");
 
-// require('dotenv').config({
-//   path: `.env.${process.env.NODE_ENV}`,
-// });
 var app = (0, _express["default"])();
 (0, _middleware["default"])(app);
 app.listen(3000, function () {
@@ -802,21 +1354,11 @@ app.listen(3000, function () {
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _passportLocal = __webpack_require__(/*! passport-local */ "passport-local");
+var _index = __webpack_require__(/*! ../db/models/index */ "./server/db/models/index.js");
 
 var localStrategy = function localStrategy(passport) {
   // Creates a user based on the posted form
-  passport.use(new _passportLocal.Strategy({
-    usernameField: 'username',
-    passwordField: 'password'
-  }, function (username, password, done) {
-    // just create a user
-    var user = {
-      username: username,
-      password: password
-    };
-    done(null, user);
-  }));
+  passport.use(_index.User.createStrategy());
 };
 
 var _default = localStrategy;
@@ -854,6 +1396,17 @@ module.exports = require("@babel/runtime/helpers/interopRequireDefault");
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/runtime/helpers/interopRequireWildcard");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/taggedTemplateLiteral":
+/*!***************************************************************!*\
+  !*** external "@babel/runtime/helpers/taggedTemplateLiteral" ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/taggedTemplateLiteral");
 
 /***/ }),
 
@@ -1011,14 +1564,14 @@ module.exports = require("passport");
 
 /***/ }),
 
-/***/ "passport-local":
-/*!*********************************!*\
-  !*** external "passport-local" ***!
-  \*********************************/
+/***/ "passport-local-mongoose":
+/*!******************************************!*\
+  !*** external "passport-local-mongoose" ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("passport-local");
+module.exports = require("passport-local-mongoose");
 
 /***/ }),
 

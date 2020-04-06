@@ -13,39 +13,46 @@ import SectionReviews from './SectionReviews';
 import Social from './Social';
 import SubscribeForm from './SubscribeForm';
 import Layout from './Layout';
+import Login from './Login';
+import Register from './Register';
 
 export {
-    CtaButtons,
-    Footer,
-    Header,
-    SectionContact,
-    SectionContent,
-    SectionCta,
-    SectionFaq,
-    SectionFeatures,
-    SectionHero,
-    SectionPosts,
-    SectionPricing,
-    SectionReviews,
-    Social,
-    SubscribeForm,
-    Layout
+  CtaButtons,
+  Footer,
+  Header,
+  SectionContact,
+  SectionContent,
+  SectionCta,
+  SectionFaq,
+  SectionFeatures,
+  SectionHero,
+  SectionPosts,
+  SectionPricing,
+  SectionReviews,
+  Social,
+  SubscribeForm,
+  Layout,
+  Login,
+  Register,
 };
 
 export default {
-    CtaButtons,
-    Footer,
-    Header,
-    SectionContact,
-    SectionContent,
-    SectionCta,
-    SectionFaq,
-    SectionFeatures,
-    SectionHero,
-    SectionPosts,
-    SectionPricing,
-    SectionReviews,
-    Social,
-    SubscribeForm,
-    Layout
+  CtaButtons,
+  Footer,
+  Header,
+  SectionContact,
+  SectionContent,
+  SectionCta,
+  SectionFaq,
+  SectionFeatures,
+  SectionHero,
+  SectionPosts,
+  SectionPricing,
+  SectionReviews,
+  Social,
+  SubscribeForm,
+  Layout,
+
+  Login,
+  Register,
 };

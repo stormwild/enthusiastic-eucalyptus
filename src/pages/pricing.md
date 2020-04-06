@@ -16,7 +16,7 @@ sections:
           * Etiam eget dui a augue
         actions:
           - label: Order Now
-            url: /signup
+            url: /register
       - title: Professional
         price: $49/m
         details: |-
@@ -28,7 +28,7 @@ sections:
         highlight: true
         actions:
           - label: Order Now
-            url: /signup
+            url: /register
       - title: Enterprise
         price: $149/m
         details: |-
@@ -38,7 +38,7 @@ sections:
           * Phasellus lobortis risus
         actions:
           - label: Order Now
-            url: /signup
+            url: /register
   - type: section_faq
     section_id: faq
     title: Frequently Asked Questions
@@ -56,7 +56,7 @@ sections:
         answer: >-
           Nunc sollicitudin libero tincidunt felis pretium, consectetur aliquam
           eros placerat. Sed neque neque, bibendum a pulvinar id, pellentesque
-          eget velit. 
+          eget velit.
       - question: Sed scelerisque in ipsum eu sollicitudin?
         answer: >-
           Nullam quis ultrices ipsum. Integer eleifend laoreet quam, ac

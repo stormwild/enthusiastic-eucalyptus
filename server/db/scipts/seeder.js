@@ -1,7 +1,8 @@
-import { CourseCategory, Instructor, Course } from '../models';
+import { CourseCategory, Instructor, Course, Role, User } from '../models';
 import courseCategoriesData from '../data/course-categories.json';
 import instructorsData from '../data/instructors.json';
 import coursesData from '../data/courses.json';
+import roleData from '../data/roles.json';
 
 export const initCourseCategories = () => {
   CourseCategory.countDocuments((err, count) => {
@@ -45,8 +46,19 @@ export const initCourses = () => {
   });
 };
 
+export const initRoles = () => {
+  Role.countDocuments((err, count) => {
+    if (count == 0) {
+      Role.collection.insertMany(roleData, (err, docs) => {
+        console.log(`Roles seeded. Inserted: ${docs.insertedCount}`);
+      });
+    }
+  });
+};
+
 export default {
   initInstructors,
   initCourseCategories,
   initCourses,
+  initRoles,
 };

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Router } from '@reach/router';
 import { Layout } from '../components/index';
-import { Default, Login } from '../components/app';
+import { Default } from '../components/app';
 
 const App = props => {
   return (
     <Layout {...props}>
       <Router basepath="/app">
-        <Login path="/login" />
         <Default path="/" />
       </Router>
     </Layout>
