@@ -797,7 +797,7 @@ var queries = {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _index.CourseCategories.find();
+              return _index.CourseCategory.find();
 
             case 2:
               return _context.abrupt("return", _context.sent);

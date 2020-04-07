@@ -1,10 +1,10 @@
-import { CourseCategories, Instructor, Course } from '../../../db/models/index';
+import { CourseCategory, Instructor, Course } from '../../../db/models/index';
 import { getRootValueHolder } from '../rootValueHolder';
 
 const queries = {
   root: () => getRootValueHolder(),
   courseCategories: async (parent, args, context, info) => {
-    return await CourseCategories.find();
+    return await CourseCategory.find();
   },
   instructors: async (parent, args, context, info) => {
     return await Instructor.find();

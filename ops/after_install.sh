@@ -19,7 +19,7 @@ else
 fi
 
 # Start the app
-NODE_ENV='test' npm run app:build
+BABEL_ENV='test' npm run app:build
 
 APP_PID=$(lsof -t -i:3000)
 if ! [ -z "$APP_PID" ]; then
