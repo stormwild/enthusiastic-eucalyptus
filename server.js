@@ -170,40 +170,6 @@ module.exports = JSON.parse("[{\"name\":\"Admin\"},{\"name\":\"Staff\"},{\"name\
 
 /***/ }),
 
-/***/ "./server/db/models/course-category.js":
-/*!*********************************************!*\
-  !*** ./server/db/models/course-category.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
-
-exports.__esModule = true;
-exports["default"] = exports.courseCategorySchema = void 0;
-
-var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
-
-var courseCategorySchema = (0, _mongoose.Schema)({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true
-  }
-});
-exports.courseCategorySchema = courseCategorySchema;
-
-var CourseCategory = _mongoose["default"].model('CourseCategory', courseCategorySchema, 'CourseCategories');
-
-var _default = CourseCategory;
-exports["default"] = _default;
-
-/***/ }),
-
 /***/ "./server/db/models/course.js":
 /*!************************************!*\
   !*** ./server/db/models/course.js ***!
@@ -247,6 +213,79 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./server/db/models/courseCategory.js":
+/*!********************************************!*\
+  !*** ./server/db/models/courseCategory.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
+
+exports.__esModule = true;
+exports["default"] = exports.courseCategorySchema = void 0;
+
+var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
+
+var courseCategorySchema = (0, _mongoose.Schema)({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  }
+});
+exports.courseCategorySchema = courseCategorySchema;
+
+var CourseCategory = _mongoose["default"].model('CourseCategory', courseCategorySchema, 'CourseCategories');
+
+var _default = CourseCategory;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/db/models/courseSchedule.js":
+/*!********************************************!*\
+  !*** ./server/db/models/courseSchedule.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
+
+exports.__esModule = true;
+exports["default"] = exports.courseScheduleSchema = void 0;
+
+var _mongoose = _interopRequireWildcard(__webpack_require__(/*! mongoose */ "mongoose"));
+
+var _mongodb = __webpack_require__(/*! mongodb */ "mongodb");
+
+var courseScheduleSchema = (0, _mongoose.Schema)({
+  course: {
+    type: _mongodb.ObjectId,
+    ref: 'Course',
+    required: true
+  },
+  dates: [{
+    type: Date,
+    "default": Date.now
+  }]
+});
+exports.courseScheduleSchema = courseScheduleSchema;
+
+var CourseSchedule = _mongoose["default"].model('CourseSchedule', courseScheduleSchema, 'CourseSchedules');
+
+var _default = CourseSchedule;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./server/db/models/index.js":
 /*!***********************************!*\
   !*** ./server/db/models/index.js ***!
@@ -261,7 +300,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 
 exports.__esModule = true;
 
-var _courseCategory = _interopRequireDefault(__webpack_require__(/*! ./course-category */ "./server/db/models/course-category.js"));
+var _courseCategory = _interopRequireDefault(__webpack_require__(/*! ./courseCategory */ "./server/db/models/courseCategory.js"));
 
 exports.CourseCategory = _courseCategory["default"];
 
@@ -272,6 +311,10 @@ exports.Instructor = _instructor["default"];
 var _course = _interopRequireDefault(__webpack_require__(/*! ./course */ "./server/db/models/course.js"));
 
 exports.Course = _course["default"];
+
+var _courseSchedule = _interopRequireDefault(__webpack_require__(/*! ./courseSchedule */ "./server/db/models/courseSchedule.js"));
+
+exports.CourseSchedule = _courseSchedule["default"];
 
 var _role = _interopRequireDefault(__webpack_require__(/*! ./role */ "./server/db/models/role.js"));
 
@@ -474,7 +517,8 @@ var conn = process.env.MONGODB_URL || 'mongodb://localhost/pcci';
 
 _mongoose["default"].connect(conn, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 
 _mongoose["default"].connection.on('connected', function () {
@@ -514,6 +558,10 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 exports.__esModule = true;
 exports["default"] = exports.initRoles = exports.initCourses = exports.initInstructors = exports.initCourseCategories = void 0;
 
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"));
+
 var _models = __webpack_require__(/*! ../models */ "./server/db/models/index.js");
 
 var _courseCategories = _interopRequireDefault(__webpack_require__(/*! ../data/course-categories.json */ "./server/db/data/course-categories.json"));
@@ -524,65 +572,179 @@ var _courses = _interopRequireDefault(__webpack_require__(/*! ../data/courses.js
 
 var _roles = _interopRequireDefault(__webpack_require__(/*! ../data/roles.json */ "./server/db/data/roles.json"));
 
-var initCourseCategories = function initCourseCategories() {
-  _models.CourseCategory.countDocuments(function (err, count) {
-    if (count == 0) {
-      _models.CourseCategory.collection.insertMany(_courseCategories["default"], function (err, docs) {
-        return console.log("CourseCategoriess seeded. Inserted: ".concat(docs.insertedCount));
-      });
-    }
-  });
-};
+var initCourseCategories = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
+    var count, inserted;
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _models.CourseCategory.countDocuments().exec();
+
+          case 2:
+            count = _context.sent;
+
+            if (!(count == 0)) {
+              _context.next = 9;
+              break;
+            }
+
+            _context.next = 6;
+            return _models.CourseCategory.insertMany(_courseCategories["default"]);
+
+          case 6:
+            inserted = _context.sent;
+            console.log("CourseCategoriess seeded. Inserted: ".concat(inserted.length));
+            return _context.abrupt("return", inserted.length);
+
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function initCourseCategories() {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 exports.initCourseCategories = initCourseCategories;
 
-var initInstructors = function initInstructors() {
-  _models.Instructor.countDocuments(function (err, count) {
-    if (count == 0) {
-      _models.Instructor.collection.insertMany(_instructors["default"], function (err, docs) {
-        return console.log("Instructors seeded. Inserted: ".concat(docs.insertedCount));
-      });
-    }
-  });
-};
+var initInstructors = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
+    var count, inserted;
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return _models.Instructor.countDocuments().exec();
+
+          case 2:
+            count = _context2.sent;
+
+            if (!(count === 0)) {
+              _context2.next = 9;
+              break;
+            }
+
+            _context2.next = 6;
+            return _models.Instructor.insertMany(_instructors["default"]);
+
+          case 6:
+            inserted = _context2.sent;
+            console.log("Instructors seeded. Inserted: ".concat(inserted.length));
+            return _context2.abrupt("return", inserted.length);
+
+          case 9:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function initInstructors() {
+    return _ref2.apply(this, arguments);
+  };
+}();
 
 exports.initInstructors = initInstructors;
 
-var initCourses = function initCourses() {
-  _models.CourseCategory.countDocuments(function (err, count) {
-    if (count > 0) {
-      _models.CourseCategory.find(function (err, categories) {
-        var courses = _courses["default"].map(function (course) {
-          var category = categories.find(function (c) {
-            return c.name == course.category.name;
-          });
-          course.category = category ? category._id : null;
-          return course;
-        });
+var initCourses = /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3() {
+    var categories, courses, count, inserted;
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return _models.CourseCategory.find().exec();
 
-        _models.Course.countDocuments(function (err, count) {
-          if (count == 0) {
-            _models.Course.collection.insertMany(courses, function (err, docs) {
-              console.log("Courses seeded. Inserted: ".concat(docs.insertedCount));
+          case 2:
+            categories = _context3.sent;
+            courses = _courses["default"].map(function (course) {
+              var category = categories.find(function (c) {
+                return c.name === course.category.name;
+              });
+              course.category = category ? category._id : null;
+              return course;
             });
-          }
-        });
-      });
-    }
-  });
-};
+            _context3.next = 6;
+            return _models.Course.countDocuments().exec();
+
+          case 6:
+            count = _context3.sent;
+
+            if (!(count === 0)) {
+              _context3.next = 13;
+              break;
+            }
+
+            _context3.next = 10;
+            return _models.Course.insertMany(courses);
+
+          case 10:
+            inserted = _context3.sent;
+            console.log("Courses seeded. Inserted: ".concat(inserted.length));
+            return _context3.abrupt("return", inserted.length);
+
+          case 13:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function initCourses() {
+    return _ref3.apply(this, arguments);
+  };
+}();
 
 exports.initCourses = initCourses;
 
-var initRoles = function initRoles() {
-  _models.Role.countDocuments(function (err, count) {
-    if (count == 0) {
-      _models.Role.collection.insertMany(_roles["default"], function (err, docs) {
-        console.log("Roles seeded. Inserted: ".concat(docs.insertedCount));
-      });
-    }
-  });
-};
+var initRoles = /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4() {
+    var count, inserted;
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return _models.Role.countDocuments().exec();
+
+          case 2:
+            count = _context4.sent;
+
+            if (!(count == 0)) {
+              _context4.next = 9;
+              break;
+            }
+
+            _context4.next = 6;
+            return _models.Role.collection.insertMany(_roles["default"]);
+
+          case 6:
+            inserted = _context4.sent;
+            console.log("Roles seeded. Inserted: ".concat(inserted.length));
+            return _context4.abrupt("return", inserted.length);
+
+          case 9:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+
+  return function initRoles() {
+    return _ref4.apply(this, arguments);
+  };
+}();
 
 exports.initRoles = initRoles;
 var _default = {
@@ -743,22 +905,288 @@ exports["default"] = _default;
 exports.__esModule = true;
 exports["default"] = void 0;
 
-var _rootValueHolder = __webpack_require__(/*! ../rootValueHolder */ "./server/graphql/resolvers/rootValueHolder.js");
+var _rootValueMutations = __webpack_require__(/*! ./rootValueMutations */ "./server/graphql/resolvers/mutations/rootValueMutations.js");
 
-var addInstructor = function addInstructor(_, _ref) {
-  var instructor = _ref.instructor;
-  instructors.push(instructor);
-  return instructor;
-};
+var _intructorMutations = __webpack_require__(/*! ./intructorMutations */ "./server/graphql/resolvers/mutations/intructorMutations.js");
 
 var mutations = {
-  addInstructor: addInstructor,
-  addRoot: function addRoot(_, _ref2) {
-    var value = _ref2.value;
-    return (0, _rootValueHolder.setRootValueHolder)(value);
-  }
+  addInstructor: _intructorMutations.addInstructor,
+  updateInstructor: _intructorMutations.updateInstructor,
+  updateRoot: _rootValueMutations.updateRoot
 };
 var _default = mutations;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/mutations/intructorMutations.js":
+/*!******************************************************************!*\
+  !*** ./server/graphql/resolvers/mutations/intructorMutations.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = exports.updateInstructor = exports.addInstructor = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"));
+
+var _index = __webpack_require__(/*! ../../../db/models/index */ "./server/db/models/index.js");
+
+var addInstructor = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(_, _ref) {
+    var input, instructorInput, courseIds, instructor;
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            input = _ref.input;
+            instructorInput = input.instructorInput, courseIds = input.courseIds;
+            instructorInput.courses = courseIds;
+            instructor = new _index.Instructor(instructorInput);
+            _context.next = 6;
+            return instructor.save();
+
+          case 6:
+            _context.next = 8;
+            return _index.Instructor.findById(instructor._id).populate('courses').exec();
+
+          case 8:
+            return _context.abrupt("return", _context.sent);
+
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function addInstructor(_x, _x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.addInstructor = addInstructor;
+
+var updateInstructor = /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(_, _ref3) {
+    var input, _id, instructorInput, courseIds;
+
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            input = _ref3.input;
+            _id = input._id, instructorInput = input.instructorInput, courseIds = input.courseIds;
+            instructorInput.courses = courseIds;
+            _context2.next = 5;
+            return _index.Instructor.findByIdAndUpdate({
+              _id: _id
+            }, instructorInput, {
+              useFindAndModify: false
+            }).exec();
+
+          case 5:
+            _context2.next = 7;
+            return _index.Instructor.findById({
+              _id: _id
+            }).populate('courses').exec();
+
+          case 7:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 8:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function updateInstructor(_x3, _x4) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+exports.updateInstructor = updateInstructor;
+var _default = {
+  addInstructor: addInstructor,
+  updateInstructor: updateInstructor
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/mutations/rootValueMutations.js":
+/*!******************************************************************!*\
+  !*** ./server/graphql/resolvers/mutations/rootValueMutations.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports["default"] = exports.updateRoot = void 0;
+
+var _rootValueHolder = __webpack_require__(/*! ../rootValueHolder */ "./server/graphql/resolvers/rootValueHolder.js");
+
+var updateRoot = function updateRoot(_, _ref) {
+  var input = _ref.input;
+  return (0, _rootValueHolder.setRootValueHolder)(input);
+};
+
+exports.updateRoot = updateRoot;
+var _default = {
+  updateRoot: updateRoot
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/queries/courseCategoryQueries.js":
+/*!*******************************************************************!*\
+  !*** ./server/graphql/resolvers/queries/courseCategoryQueries.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = exports.courseCategory = exports.courseCategories = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"));
+
+var _index = __webpack_require__(/*! ../../../db/models/index */ "./server/db/models/index.js");
+
+var courseCategories = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, args, context, info) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _index.CourseCategory.find();
+
+          case 2:
+            return _context.abrupt("return", _context.sent);
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function courseCategories(_x, _x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.courseCategories = courseCategories;
+
+var courseCategory = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(parent, args, context, info) {
+    var id;
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            id = args.id;
+            _context2.next = 3;
+            return _index.CourseCategory.findById(id);
+
+          case 3:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function courseCategory(_x5, _x6, _x7, _x8) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.courseCategory = courseCategory;
+var _default = {
+  courseCategories: courseCategories,
+  courseCategory: courseCategory
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/queries/courseQueries.js":
+/*!***********************************************************!*\
+  !*** ./server/graphql/resolvers/queries/courseQueries.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = exports.courses = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"));
+
+var _index = __webpack_require__(/*! ../../../db/models/index */ "./server/db/models/index.js");
+
+var courses = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, args, context, info) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _index.Course.find().populate('category');
+
+          case 2:
+            return _context.abrupt("return", _context.sent);
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function courses(_x, _x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.courses = courses;
+var _default = {
+  courses: courses
+};
 exports["default"] = _default;
 
 /***/ }),
@@ -773,10 +1201,43 @@ exports["default"] = _default;
 "use strict";
 
 
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _courseCategoryQueries = __webpack_require__(/*! ./courseCategoryQueries */ "./server/graphql/resolvers/queries/courseCategoryQueries.js");
+
+var _courseQueries = __webpack_require__(/*! ./courseQueries */ "./server/graphql/resolvers/queries/courseQueries.js");
+
+var _instructorQueries = __webpack_require__(/*! ./instructorQueries */ "./server/graphql/resolvers/queries/instructorQueries.js");
+
+var _rootQueries = __webpack_require__(/*! ./rootQueries */ "./server/graphql/resolvers/queries/rootQueries.js");
+
+var queries = {
+  root: _rootQueries.root,
+  courseCategories: _courseCategoryQueries.courseCategories,
+  courseCategory: _courseCategoryQueries.courseCategory,
+  instructors: _instructorQueries.instructors,
+  courses: _courseQueries.courses
+};
+var _default = queries;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/queries/instructorQueries.js":
+/*!***************************************************************!*\
+  !*** ./server/graphql/resolvers/queries/instructorQueries.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports["default"] = void 0;
+exports["default"] = exports.instructors = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"));
 
@@ -784,92 +1245,62 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 
 var _index = __webpack_require__(/*! ../../../db/models/index */ "./server/db/models/index.js");
 
+var instructors = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, args, context, info) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _index.Instructor.find();
+
+          case 2:
+            return _context.abrupt("return", _context.sent);
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function instructors(_x, _x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.instructors = instructors;
+var _default = {
+  instructors: instructors
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./server/graphql/resolvers/queries/rootQueries.js":
+/*!*********************************************************!*\
+  !*** ./server/graphql/resolvers/queries/rootQueries.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports["default"] = exports.root = void 0;
+
 var _rootValueHolder = __webpack_require__(/*! ../rootValueHolder */ "./server/graphql/resolvers/rootValueHolder.js");
 
-var queries = {
-  root: function root() {
-    return (0, _rootValueHolder.getRootValueHolder)();
-  },
-  courseCategories: function () {
-    var _courseCategories = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(parent, args, context, info) {
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return _index.CourseCategory.find();
-
-            case 2:
-              return _context.abrupt("return", _context.sent);
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-
-    function courseCategories(_x, _x2, _x3, _x4) {
-      return _courseCategories.apply(this, arguments);
-    }
-
-    return courseCategories;
-  }(),
-  instructors: function () {
-    var _instructors = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(parent, args, context, info) {
-      return _regenerator["default"].wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return _index.Instructor.find();
-
-            case 2:
-              return _context2.abrupt("return", _context2.sent);
-
-            case 3:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }));
-
-    function instructors(_x5, _x6, _x7, _x8) {
-      return _instructors.apply(this, arguments);
-    }
-
-    return instructors;
-  }(),
-  courses: function () {
-    var _courses = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(parent, args, context, info) {
-      return _regenerator["default"].wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return _index.Course.find().populate('category');
-
-            case 2:
-              return _context3.abrupt("return", _context3.sent);
-
-            case 3:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }));
-
-    function courses(_x9, _x10, _x11, _x12) {
-      return _courses.apply(this, arguments);
-    }
-
-    return courses;
-  }()
+var root = function root() {
+  return (0, _rootValueHolder.getRootValueHolder)();
 };
-var _default = queries;
+
+exports.root = root;
+var _default = {
+  root: root
+};
 exports["default"] = _default;
 
 /***/ }),
@@ -978,6 +1409,41 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "./server/graphql/schema/courseSchedule.js":
+/*!*************************************************!*\
+  !*** ./server/graphql/schema/courseSchedule.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports["default"] = void 0;
+
+var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/taggedTemplateLiteral */ "@babel/runtime/helpers/taggedTemplateLiteral"));
+
+var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+
+function _templateObject() {
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  input AddCourseScheduleInput {\n    courseId: ID!\n    dates: [GraphQLDate]\n  }\n\n  input UpdateCourseScheduleInput {\n    _id: ID!\n    courseId: ID!\n    dates: [GraphQLDate]\n  }\n\n  type CourseSchedule {\n    _id: ID!\n    course: Course!\n    dates: [GraphQLDate]\n  }\n\n  extend type Query {\n    courseSchedules: [CourseSchedule!]!\n  }\n\n  extend type Mutation {\n    addCourseSchedule(input: AddCourseScheduleInput): CourseSchedule!\n    updteCourseSchedule(input: UpdateCourseScheduleInput): CourseSchedule!\n  }\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+var courseSchedule = (0, _apolloServerExpress.gql)(_templateObject());
+var _default = courseSchedule;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "./server/graphql/schema/graphQLDate.js":
 /*!**********************************************!*\
   !*** ./server/graphql/schema/graphQLDate.js ***!
@@ -1032,6 +1498,10 @@ var _course = _interopRequireDefault(__webpack_require__(/*! ./course */ "./serv
 
 var _courseCategory = _interopRequireDefault(__webpack_require__(/*! ./courseCategory */ "./server/graphql/schema/courseCategory.js"));
 
+var _courseSchedule = _interopRequireDefault(__webpack_require__(/*! ./courseSchedule */ "./server/graphql/schema/courseSchedule.js"));
+
+var _graphQLDate = _interopRequireDefault(__webpack_require__(/*! ./graphQLDate */ "./server/graphql/schema/graphQLDate.js"));
+
 var _instructor = _interopRequireDefault(__webpack_require__(/*! ./instructor */ "./server/graphql/schema/instructor.js"));
 
 var _role = _interopRequireDefault(__webpack_require__(/*! ./role */ "./server/graphql/schema/role.js"));
@@ -1040,9 +1510,7 @@ var _root = _interopRequireDefault(__webpack_require__(/*! ./root */ "./server/g
 
 var _user = _interopRequireDefault(__webpack_require__(/*! ./user */ "./server/graphql/schema/user.js"));
 
-var _graphQLDate = _interopRequireDefault(__webpack_require__(/*! ./graphQLDate */ "./server/graphql/schema/graphQLDate.js"));
-
-var typeDefsArray = [_root["default"], _role["default"], _courseCategory["default"], _instructor["default"], _user["default"], _course["default"], _graphQLDate["default"]];
+var typeDefsArray = [_course["default"], _courseCategory["default"], _courseSchedule["default"], _graphQLDate["default"], _instructor["default"], _role["default"], _root["default"], _user["default"]];
 var _default = typeDefsArray;
 exports["default"] = _default;
 
@@ -1068,7 +1536,7 @@ var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @ba
 var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
 
 function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2["default"])(["\n  input InstructorInput {\n    name: String!\n    photo: String\n    excerpt: String\n    bio: String\n    courses: [ID!]!\n  }\n\n  type Instructor {\n    _id: ID!\n    name: String!\n    photo: String\n    excerpt: String\n    bio: String\n    courses: [Course!]!\n  }\n\n  extend type Query {\n    instructors: [Instructor]\n  }\n\n  extend type Mutation {\n    addInstructor(instructor: InstructorInput!): Instructor!\n    updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!\n  }\n"]);
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  input InstructorInput {\n    name: String!\n    photo: String\n    excerpt: String\n    bio: String\n  }\n\n  input InstructorCourseIdsInput {\n    instructorInput: InstructorInput\n    courseIds: [ID!]!\n  }\n\n  input UpdateInstructorInput {\n    _id: ID!\n    instructorInput: InstructorInput\n    courseIds: [ID!]!\n  }\n\n  type Instructor {\n    _id: ID!\n    name: String!\n    photo: String\n    excerpt: String\n    bio: String\n    courses: [Course!]!\n  }\n\n  extend type Query {\n    instructors: [Instructor]\n  }\n\n  extend type Mutation {\n    addInstructor(input: InstructorCourseIdsInput!): Instructor!\n    updateInstructor(input: UpdateInstructorInput!): Instructor!\n  }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -1138,7 +1606,7 @@ var _taggedTemplateLiteral2 = _interopRequireDefault(__webpack_require__(/*! @ba
 var _apolloServerExpress = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
 
 function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2["default"])(["\n  type Query {\n    root: String\n  }\n\n  type Mutation {\n    addRoot(value: String!): String\n  }\n"]);
+  var data = (0, _taggedTemplateLiteral2["default"])(["\n  type Query {\n    root: String\n  }\n\n  type Mutation {\n    updateRoot(input: String!): String\n  }\n"]);
 
   _templateObject = function _templateObject() {
     return data;

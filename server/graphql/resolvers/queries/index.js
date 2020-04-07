@@ -1,17 +1,14 @@
-import { CourseCategory, Instructor, Course } from '../../../db/models/index';
-import { getRootValueHolder } from '../rootValueHolder';
+import { courseCategories, courseCategory } from './courseCategoryQueries';
+import { courses } from './courseQueries';
+import { instructors } from './instructorQueries';
+import { root } from './rootQueries';
 
 const queries = {
-  root: () => getRootValueHolder(),
-  courseCategories: async (parent, args, context, info) => {
-    return await CourseCategory.find();
-  },
-  instructors: async (parent, args, context, info) => {
-    return await Instructor.find();
-  },
-  courses: async (parent, args, context, info) => {
-    return await Course.find().populate('category');
-  },
+  root,
+  courseCategories,
+  courseCategory,
+  instructors,
+  courses,
 };
 
 export default queries;

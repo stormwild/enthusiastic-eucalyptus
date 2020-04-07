@@ -39,11 +39,11 @@ process.on('SIGTERM', () => {
 
 const conn = process.env.MONGODB_URL || 'mongodb://localhost/pcci';
 
-mongoose.connect(conn, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(conn, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
 mongoose.connection.on('connected', () => console.log(`Mongoose connected to ${conn}`));
 
-mongoose.connection.on('error', err => console.log('Mongoose connection error:', err));
+mongoose.connection.on('error', (err) => console.log('Mongoose connection error:', err));
 
 mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
 

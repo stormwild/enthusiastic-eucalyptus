@@ -6,7 +6,7 @@ const root = gql`
   }
 
   type Mutation {
-    addRoot(value: String!): String
+    updateRoot(input: String!): String
   }
 `;
 

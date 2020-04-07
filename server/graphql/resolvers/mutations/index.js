@@ -1,15 +1,10 @@
-import { setRootValueHolder } from '../rootValueHolder';
-
-const addInstructor = (_, { instructor }) => {
-  instructors.push(instructor);
-  return instructor;
-};
+import { updateRoot } from './rootValueMutations';
+import { addInstructor, updateInstructor } from './intructorMutations';
 
 const mutations = {
   addInstructor,
-  addRoot: (_, { value }) => {
-    return setRootValueHolder(value);
-  },
+  updateInstructor,
+  updateRoot,
 };
 
 export default mutations;

@@ -6,7 +6,17 @@ const instructor = gql`
     photo: String
     excerpt: String
     bio: String
-    courses: [ID!]!
+  }
+
+  input InstructorCourseIdsInput {
+    instructorInput: InstructorInput
+    courseIds: [ID!]!
+  }
+
+  input UpdateInstructorInput {
+    _id: ID!
+    instructorInput: InstructorInput
+    courseIds: [ID!]!
   }
 
   type Instructor {
@@ -23,8 +33,8 @@ const instructor = gql`
   }
 
   extend type Mutation {
-    addInstructor(instructor: InstructorInput!): Instructor!
-    updateInstructor(_id: ID!, instructor: InstructorInput!): Instructor!
+    addInstructor(input: InstructorCourseIdsInput!): Instructor!
+    updateInstructor(input: UpdateInstructorInput!): Instructor!
   }
 `;
 
