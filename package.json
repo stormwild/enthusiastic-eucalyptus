@@ -22,7 +22,7 @@
     "gatsby-plugin-express": "^1.1.6",
     "gatsby-plugin-react-helmet": "^3.0.0",
     "gatsby-source-filesystem": "^2.2.1",
-    "gatsby-transformer-remark": "2.3.8",
+    "gatsby-transformer-remark": "5.25.1",
     "graphql": "^14.6.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
